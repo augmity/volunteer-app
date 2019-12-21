@@ -1,12 +1,11 @@
-import React, { useCallback, useContext } from 'react';
-import { withRouter, Redirect } from 'react-router';
+import React, { useCallback } from 'react';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-import { Form, Icon, Input, Button, Divider, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button, Divider, message } from 'antd';
 
 import { auth, firebase } from '../../../../../firebase';
-import { AuthContext } from '../Auth';
 
-import './Login.css';
+import './SignUp.css';
 
 
 // TODO: use proper type
@@ -15,7 +14,7 @@ interface IProps {
   form?: any;
 }
 
-const LoginForm = ({ history, form }: IProps) => {
+const SignUpForm = ({ history, form }: IProps) => {
 
   const handleLogin = useCallback(
     event => {
@@ -23,7 +22,7 @@ const LoginForm = ({ history, form }: IProps) => {
       form.validateFields(async (err: any, values: any) => {
         if (!err) {
           try {
-            await auth.signInWithEmailAndPassword(values.email, values.password);
+            await auth.createUserWithEmailAndPassword(values.email, values.password);
             history.push('/');
           } catch (error) {
             message.error(error.message);
@@ -44,21 +43,13 @@ const LoginForm = ({ history, form }: IProps) => {
       });
   }
 
-
-  // Login form should only be visible when the user is not logged in.
-  // Otherwise, just redirect to the home page.
-  const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    return <Redirect to="/" />;
-  }
-
   const { getFieldDecorator } = form;
 
 
   return (
-    <div className="login-form">
+    <div className="sign-up-form">
 
-      <h2>Sign in</h2>
+      <h2>Sign up</h2>
 
       <Button type="primary" icon="google" onClick={loginWithGoogle}>Google</Button>
 
@@ -97,24 +88,57 @@ const LoginForm = ({ history, form }: IProps) => {
         </Form.Item>
 
         <Form.Item>
-          {/* {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a> */}
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
+          <Button type="primary" htmlType="submit" className="sign-up-form-button">
+            Sign up
           </Button>
-          No account yet? <Link to="/signup">Sign up!</Link>
+          Signed up already? <Link to="/login">Sign in!</Link>
         </Form.Item>
       </Form>
     </div>
   );
 }
 
-const LoginWithRouter = withRouter(LoginForm);
-const WrappedLoginForm = Form.create({ name: 'login_form' })(LoginWithRouter);
+const SignUpWithRouter = withRouter(SignUpForm);
+const WrappedSignUpForm = Form.create({ name: 'signup_form' })(SignUpWithRouter);
 
-export { WrappedLoginForm as Login };
+export { WrappedSignUpForm as SignUp };
+
+
+
+
+// const SignUp = ({ history }: IProps) => {
+
+//   const handleSignUp = useCallback(async event => {
+//     event.preventDefault();
+//     const { email, password } = event.target.elements;
+//     try {
+//       await auth
+//         .createUserWithEmailAndPassword(email.value, password.value);
+//       history.push("/");
+//     } catch (error) {
+//       alert(error);
+//     }
+//   }, [history]);
+
+//   return (
+//     <div>
+//       <h1>Sign up</h1>
+//       <form onSubmit={handleSignUp}>
+//         <label>
+//           Email
+//           <input name="email" type="email" placeholder="Email" />
+//         </label>
+//         <label>
+//           Password
+//           <input name="password" type="password" placeholder="Password" />
+//         </label>
+//         <button type="submit">Sign Up</button>
+//       </form>
+//       <Link to="/login">Login</Link>
+//     </div>
+//   );
+// };
+
+// const signupWithRouter = withRouter(SignUp)
+
+// export { signupWithRouter as SignUp };

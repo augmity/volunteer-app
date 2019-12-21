@@ -8,10 +8,8 @@ export const PrivateRoute = ({ component: RouteComponent, ...rest }: any) => {
   
   const {currentUser} = useContext(AuthContext);
 
-  console.log('currentUser', currentUser);
-
-  // Auth state code from the firebase wasn't executed yet, so we have to wait for it
-  // and displaying nothing in the meantime
+  // If the Auth state code from the firebase wasn't executed yet,
+  // we have to wait for it and display nothing in the meantime.
   if (currentUser === undefined) {
     return null;
   }

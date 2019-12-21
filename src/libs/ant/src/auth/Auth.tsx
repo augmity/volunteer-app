@@ -10,11 +10,11 @@ interface IProps {
 export const AuthContext = React.createContext<any>(null);
 
 export const AuthProvider = ({ children }: IProps) => {
+
   const [currentUser, setCurrentUser] = useState<any>(undefined); // TODO: use proper type
 
   useEffect(() => {
     auth.onAuthStateChanged((data) => {
-      console.log('data', data);
       setCurrentUser(data);
     });
   }, []);
