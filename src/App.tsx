@@ -5,13 +5,14 @@ import { Home } from './app/home/Home';
 import { Login, SignUp } from './libs/ant/src';
 import { AuthProvider, PrivateRoute } from './libs/ant/src';
 
+import './App.css';
+
 
 const App: React.FC = () => {
 
   return (
     <AuthProvider>
       <Router>
-        <p>app</p>
         <div>
           <PrivateRoute exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />

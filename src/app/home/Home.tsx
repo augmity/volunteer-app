@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import Button from 'antd/es/button';
+
 import { auth } from '../../firebase';
 import { AuthContext } from '../../libs/ant/src';
 
@@ -16,7 +18,7 @@ export const Home = () => {
         {(currentUser.email)}
       </p>}
 
-      <button onClick={() => auth.signOut()}>Sign out</button>
+      <Button type="primary" onClick={() => auth.signOut()}>Sign out</Button>
     </>
   );
 };
