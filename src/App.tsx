@@ -1,13 +1,24 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import './App.css';
+import { Home } from './app/home/Home';
+import { Login, SignUp } from './libs/ant/src';
+import { AuthProvider, PrivateRoute } from './libs/ant/src';
 
 
 const App: React.FC = () => {
+
   return (
-    <div className="App">
-      eventeer-lite
-    </div>
+    <AuthProvider>
+      <Router>
+        <p>app</p>
+        <div>
+          <PrivateRoute exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
