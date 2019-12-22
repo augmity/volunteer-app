@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 
 import { UserDropdown } from './UserDropdown';
+import { People } from '../people/People/People';
 
 import './Home.css';
 
@@ -42,14 +43,9 @@ export const Home = () => {
           <UserDropdown className="user-dropdown" />
         </Header>
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>People</Breadcrumb.Item>
-          </Breadcrumb>
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-            
-            ...content...
-            
-          </div>
+
+          <People />
+
         </Content>
         {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
       </Layout>
