@@ -3,3 +3,8 @@
   padding: 16px;
   background: #fff;
 }
+
+.header {
+  display: flex;
+  align-items: baseline;
+}

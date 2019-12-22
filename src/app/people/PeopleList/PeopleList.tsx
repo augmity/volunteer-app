@@ -1,25 +1,15 @@
 import React from 'react';
 import { List, Avatar } from 'antd';
 
+import { IPerson } from '../IPerson';
 import './PeopleList.css';
 
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+interface IPeopleListProps {
+  data: IPerson[];
+}
 
-export const PeopleList: React.FC = () => {
+export const PeopleList: React.FC<IPeopleListProps> = ({ data }) => {
 
   return (
     <List
@@ -28,9 +18,9 @@ export const PeopleList: React.FC = () => {
       renderItem={item => (
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-            title={<a href="https://ant.design">{item.title}</a>}
-            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+            avatar={<Avatar src={item.photoUri} />}
+            title={<a href="">{item.name}</a>}
+            description={item.email}
           />
         </List.Item>
       )}
