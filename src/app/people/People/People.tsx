@@ -12,10 +12,13 @@ import './People.css';
 
 export const People: React.FC = () => {
 
+  const [formMode, setFormMode] = useState<string>('none');
+  const [formValue, setFormValue] = useState<IPerson | null>(null);
+  
   const [data, setData] = useState<IPerson[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
+      console.log('FETCHING DATA FROM THE FIRESTORE');
       const data = await db.collection('users').get();
       setData(data.docs.map(doc => ({ ...doc.data(), id: doc.id } as IPerson)));
     };
@@ -23,23 +26,51 @@ export const People: React.FC = () => {
   }, []);
 
 
+  const switchToListMode = () => {
+    setFormValue(null);
+    setFormMode('none');
+  }
+
   return (
     <>
       <div  className="header">
         <Breadcrumb style={{ margin: '16px 16px 16px 0' }}>
-          <Breadcrumb.Item>People</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <a onClick={switchToListMode}>People</a>
+          </Breadcrumb.Item>
+          { (formMode === 'add') && <Breadcrumb.Item>Add New</Breadcrumb.Item>}
+          { (formMode === 'edit') && <Breadcrumb.Item>Edit ({formValue?.name})</Breadcrumb.Item>}
         </Breadcrumb>
 
-        <Button type="primary" size="small" icon="plus">
-          Add
-        </Button>
+        { (formMode === 'none') && 
+          <Button type="primary" size="small" icon="plus" onClick={() => {
+            setFormValue(null);
+            setFormMode('add');
+          }}>
+            Add
+          </Button>
+        }
       </div>
       
       <div className="content">
-        <div style={{ marginRight: 16 }}>
-          <PeopleList data={data} />
+        <div style={{ marginRight: 128, display: (formMode === 'none') ? 'block' : 'none' }}>
+          <PeopleList
+            data={data}
+            onSelectItem={(item) => {
+              setFormValue(item);
+              setFormMode('edit');
+            }}
+          />
         </div>
-        <PersonForm />
+        { (formMode !== 'none') && <div>
+          <PersonForm />
+          <div>
+            <Button type="primary" style={{ marginRight: 8 }}>Save</Button>
+            <Button onClick={switchToListMode}>Cancel</Button>
+          </div>
+        </div>}
+
+        <p>{JSON.stringify(formValue, null, 2)}</p>
       </div>
     </>
   );

@@ -7,9 +7,16 @@ import './PeopleList.css';
 
 interface IPeopleListProps {
   data: IPerson[];
+  onSelectItem?: (item: IPerson) => void;
 }
 
-export const PeopleList: React.FC<IPeopleListProps> = ({ data }) => {
+export const PeopleList: React.FC<IPeopleListProps> = ({ data, onSelectItem }) => {
+
+  const selectItem = (item: IPerson) => {
+    if (onSelectItem) {
+      onSelectItem(item);
+    }
+  }
 
   return (
     <List
@@ -19,7 +26,7 @@ export const PeopleList: React.FC<IPeopleListProps> = ({ data }) => {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar src={item.photoUri} />}
-            title={<a href="">{item.name}</a>}
+            title={<a onClick={() => selectItem(item)}>{item.name}</a>}
             description={item.email}
           />
         </List.Item>
