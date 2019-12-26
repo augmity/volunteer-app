@@ -1,4 +1,6 @@
 import React, { useEffect, useState, ReactNode } from 'react';
+import { User } from 'firebase';
+
 import { auth } from '../../../../firebase';
 
 
@@ -11,7 +13,7 @@ export const AuthContext = React.createContext<any>(null);
 
 export const AuthProvider = ({ children }: IProps) => {
 
-  const [currentUser, setCurrentUser] = useState<any>(undefined); // TODO: use proper type
+  const [currentUser, setCurrentUser] = useState<User | undefined | null>(undefined); // TODO: use proper type
 
   useEffect(() => {
     auth.onAuthStateChanged((data) => {

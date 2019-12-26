@@ -24,13 +24,13 @@ export const Home = () => {
       <Sider theme="light" collapsible collapsed={state.collapsed} onCollapse={onCollapse}>
         <div className="logo" />
         <Menu defaultSelectedKeys={['1']} mode="inline">
+          <Menu.Item key="2">
+            <Icon type="calendar" />
+            <span>Shifts</span>
+          </Menu.Item>
           <Menu.Item key="1">
             <Icon type="user" />
             <span>People</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Icon type="team" />
-            <span>Teams</span>
           </Menu.Item>
           <Menu.Item key="9">
             <Icon type="setting" />
@@ -39,7 +39,10 @@ export const Home = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}>
+        <Header id="header">
+          <h4 style={{ marginLeft: 16 }}>
+            Volunteer App
+          </h4>
           <UserDropdown className="user-dropdown" />
         </Header>
         <Content style={{ margin: '0 16px' }}>

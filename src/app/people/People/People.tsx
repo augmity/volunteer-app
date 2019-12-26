@@ -69,8 +69,6 @@ export const People: React.FC = () => {
             <Button onClick={switchToListMode}>Cancel</Button>
           </div>
         </div>}
-
-        <p>{JSON.stringify(formValue, null, 2)}</p>
       </div>
     </>
   );

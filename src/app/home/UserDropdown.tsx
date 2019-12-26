@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Menu, Dropdown, Icon } from 'antd';
+import { Menu, Dropdown, Icon, Avatar } from 'antd';
 
 import { auth } from '../../firebase';
 import { AuthContext } from '../../libs/ant/src';
@@ -16,10 +16,17 @@ export const UserDropdown: React.FC<{ className: string}> = ({ className }) => {
   const { currentUser } = useContext(AuthContext);
 
   return (
-    <Dropdown overlay={menu} trigger={['click']} className={className}>
-      <a className="ant-dropdown-link" href="#">
-        {currentUser.email} <Icon type="down" />
-      </a>
-    </Dropdown>
+    <div className={className}>
+      <Dropdown overlay={menu} trigger={['click']}>
+        <a className="ant-dropdown-link" href="#">
+          {currentUser.email} <Icon type="down" />
+        </a>
+      </Dropdown>
+
+      { (currentUser && currentUser.photoURL) 
+        ? <Avatar src={currentUser.photoURL} style={{ marginLeft: 8 }} />
+        : <Avatar icon="user" style={{ marginLeft: 8 }} />
+      }
+    </div>
   );
 }

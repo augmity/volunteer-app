@@ -1,4 +1,6 @@
-.user-dropdown {
-  float: right;
-  margin-right: 24px;
+#header {
+  display: flex;
+  padding: 0 16px;
+  justify-content: space-between;
+  background: #fff;
 }
