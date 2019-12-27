@@ -1,56 +1,73 @@
 import React, { useState } from 'react';
+import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
+
+import { PrivateRoute } from '../../libs/ant/src';
 
 import { UserDropdown } from './UserDropdown';
 import { People } from '../people/People/People';
+import { ShiftsView } from '../shifts/ShiftsView';
 
 import './Home.css';
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 export const Home = () => {
 
   const [state, setState] = useState({
     collapsed: true,
-  })
+  });
+
+  const location = useLocation();
+  const menuDefualtSelected = location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '';
 
   const onCollapse = (collapsed: boolean) => {
     setState({ collapsed });
   };
 
+  console.log('location', location);
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light" collapsible collapsed={state.collapsed} onCollapse={onCollapse}>
         <div className="logo" />
-        <Menu defaultSelectedKeys={['1']} mode="inline">
-          <Menu.Item key="2">
-            <Icon type="calendar" />
-            <span>Shifts</span>
+        <Menu defaultSelectedKeys={[menuDefualtSelected]} mode="inline">
+          <Menu.Item key="shifts">
+            <Link to="/shifts">
+              <Icon type="calendar" />
+              <span>Shifts</span>
+            </Link>
           </Menu.Item>
-          <Menu.Item key="1">
-            <Icon type="user" />
-            <span>People</span>
+          <Menu.Item key="people">
+            <Link to="/people">
+              <Icon type="user" />
+              <span>People</span>
+            </Link>
           </Menu.Item>
-          <Menu.Item key="9">
+          {/* <Menu.Item key="9">
             <Icon type="setting" />
             <span>Settings</span>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
+
       <Layout>
         <Header id="header">
           <h4 style={{ marginLeft: 16 }}>
-            Volunteer App
+            <Link to="/">Volunteer App</Link>
           </h4>
           <UserDropdown className="user-dropdown" />
         </Header>
         <Content style={{ margin: '0 16px' }}>
-
-          <People />
-
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/shifts" />
+            </Route>
+            <Route path="/shifts" component={ShiftsView} />
+            <Route path="/people" component={People} />
+          </Switch>
         </Content>
-        {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
       </Layout>
     </Layout>
   );
