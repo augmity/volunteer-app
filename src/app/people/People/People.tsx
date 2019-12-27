@@ -43,7 +43,7 @@ export const People: React.FC = () => {
         </Breadcrumb>
 
         { (formMode === 'none') && 
-          <Button type="primary" size="small" icon="plus" onClick={() => {
+          <Button type="primary" size="small" onClick={() => {
             setFormValue(null);
             setFormMode('add');
           }}>
