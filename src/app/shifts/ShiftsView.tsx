@@ -1,36 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Calendar  } from 'antd';
+import { Button, Calendar, Drawer  } from 'antd';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import { db } from '../../firebase';
 
 import { IShift } from './IShift';
 
+import { ShiftFormComponent } from './ShiftForm/ShiftForm';
 import './ShiftsView.css';
 
 
 export const ShiftsView: React.FC = () => {
 
   const [formValue, setFormValue] = useState<IShift | null>(null);
-  const [data, setData] = useState<IShift[]>([]);
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('FETCHING IShift DATA FROM THE FIRESTORE');
-      const data = await db.collection('shifts').get();
-      setData(data.docs.map(doc => ({ ...doc.data(), id: doc.id } as IShift)));
-    };
-    fetchData();
-  }, []);
+  const [formVisible, setFormVisible] = useState<boolean>(false);
+
+  const [data, loading, error] = useCollectionData<IShift>(
+    db.collection('shifts'),
+    { idField: 'id' }
+  );
 
   return (
     <>
       <div className="header" style={{ padding: '16px 0'}}>
-        <Button type="primary" size="small">
+        <Button type="primary" size="small" onClick={() => setFormVisible(true)}>
           Add
         </Button>
       </div>
       
-      <Calendar style={{backgroundColor: '#fff'}} />
+      <div
+        style={{
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <Calendar style={{backgroundColor: '#fff'}} />
+        <Drawer
+          title={formValue ? 'Edit' : 'Add'}
+          placement="left"
+          closable={false}
+          onClose={() => setFormVisible(false)}
+          visible={formVisible}
+          getContainer={false}
+          width="400"
+          style={{ position: 'absolute' }}
+        >
+          <ShiftFormComponent />
+        </Drawer>
+      </div>
     </>
   );
 }

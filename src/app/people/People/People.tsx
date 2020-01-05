@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb, Button } from 'antd';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import { db } from '../../../firebase';
 
@@ -14,17 +15,11 @@ export const People: React.FC = () => {
 
   const [formMode, setFormMode] = useState<string>('none');
   const [formValue, setFormValue] = useState<IPerson | null>(null);
-  
-  const [data, setData] = useState<IPerson[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('FETCHING DATA FROM THE FIRESTORE');
-      const data = await db.collection('users').get();
-      setData(data.docs.map(doc => ({ ...doc.data(), id: doc.id } as IPerson)));
-    };
-    fetchData();
-  }, []);
 
+  const [data, loading, error] = useCollectionData<IPerson>(
+    db.collection('users'),
+    { idField: 'id' }
+  );
 
   const switchToListMode = () => {
     setFormValue(null);
@@ -56,6 +51,7 @@ export const People: React.FC = () => {
         <div style={{ marginRight: 128, display: (formMode === 'none') ? 'block' : 'none' }}>
           <PeopleList
             data={data}
+            loading={loading}
             onSelectItem={(item) => {
               setFormValue(item);
               setFormMode('edit');

@@ -26,8 +26,6 @@ export const Home = () => {
     setState({ collapsed });
   };
 
-  console.log('location', location);
-
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light" collapsible collapsed={state.collapsed} onCollapse={onCollapse}>

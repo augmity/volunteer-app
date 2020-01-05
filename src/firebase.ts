@@ -18,4 +18,8 @@ const firebaseApp = firebase.initializeApp({
 const db = firebase.firestore(firebaseApp); // Initialize firestore
 const auth = firebase.auth(firebaseApp); // Initialize firebase auth
 
+db.enablePersistence({ synchronizeTabs: true });
+
+console.log('firebase init');
+
 export { firebase, firebaseApp, auth, db };
