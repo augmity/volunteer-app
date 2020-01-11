@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Calendar, Drawer  } from 'antd';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import { db } from '../../firebase';
+import { useFirestoreCollection } from '../../libs/firebase';
 
 import { IShift } from './IShift';
 
@@ -15,10 +14,7 @@ export const ShiftsView: React.FC = () => {
   const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
 
-  const [data, loading, error] = useCollectionData<IShift>(
-    db.collection('shifts'),
-    { idField: 'id' }
-  );
+  const { data, loading } = useFirestoreCollection<IShift>('shifts');
 
   return (
     <>

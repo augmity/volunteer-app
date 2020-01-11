@@ -1,9 +1,11 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, DatePicker } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { IShift } from '../IShift';
 
+
+const { RangePicker } = DatePicker;
 
 interface IProps {
   form: WrappedFormUtils;
@@ -11,6 +13,7 @@ interface IProps {
   onSubmit: () => void;
   onCancel: () => void;
 }
+
 
 const ShiftFormComponent: React.FC<IProps> = ({ form }) => {
 
@@ -28,29 +31,17 @@ const ShiftFormComponent: React.FC<IProps> = ({ form }) => {
           ],
         })(<Input />)}
       </Form.Item>
-      <Form.Item label="Email">
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: 'Email address is not valid',
-            },
-            {
-              required: true,
-              message: 'Email is required',
-            },
-          ],
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Photo URI">
-        {getFieldDecorator('photoUri', {
-          rules: [
-            {
-              required: true,
-              message: 'Photo URI is required',
-            },
-          ],
-        })(<Input />)}
+
+      <Form.Item label="From - To">
+        {getFieldDecorator('fromTo', {
+          rules: [{
+            type: 'array',
+            required: true,
+            message: 'Please select the date-time range'
+          }]
+        })(
+          <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />,
+        )}
       </Form.Item>
     </Form>
   );

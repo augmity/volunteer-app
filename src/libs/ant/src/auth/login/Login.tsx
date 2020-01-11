@@ -1,9 +1,10 @@
 import React, { useCallback, useContext } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import fb from 'firebase';
 import { Form, Icon, Input, Button, Divider, Checkbox, message } from 'antd';
 
-import { auth, firebase } from '../../../../../firebase';
+import { Firebase, FirebaseContext } from '../../../../firebase';
 import { AuthContext } from '../Auth';
 
 import './Login.css';
@@ -17,13 +18,15 @@ interface IProps {
 
 const LoginForm = ({ history, form }: IProps) => {
 
+  const firebase = useContext(FirebaseContext) as Firebase;
+
   const handleLogin = useCallback(
     event => {
       event.preventDefault();
       form.validateFields(async (err: any, values: any) => {
         if (!err) {
           try {
-            await auth.signInWithEmailAndPassword(values.email, values.password);
+            await firebase.auth.signInWithEmailAndPassword(values.email, values.password);
             history.push('/');
           } catch (error) {
             message.error(error.message);
@@ -35,8 +38,8 @@ const LoginForm = ({ history, form }: IProps) => {
   );
 
   const loginWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
+    const provider = new fb.auth.GoogleAuthProvider();
+    firebase.auth.signInWithPopup(provider)
       .then((result) => {
         history.push('/');
       }).catch((error) => {

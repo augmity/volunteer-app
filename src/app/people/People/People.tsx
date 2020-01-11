@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Button } from 'antd';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import { db } from '../../../firebase';
+import { useFirestoreCollection } from '../../../libs/firebase';
 
 import { PeopleList } from '../PeopleList/PeopleList';
 import { PersonForm } from '../PersonForm/PersonForm';
@@ -16,10 +15,8 @@ export const People: React.FC = () => {
   const [formMode, setFormMode] = useState<string>('none');
   const [formValue, setFormValue] = useState<IPerson | null>(null);
 
-  const [data, loading, error] = useCollectionData<IPerson>(
-    db.collection('users'),
-    { idField: 'id' }
-  );
+
+  const { data, loading } = useFirestoreCollection<IPerson>('users');
 
   const switchToListMode = () => {
     setFormValue(null);

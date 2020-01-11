@@ -1,28 +1,42 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, useContext, ReactNode } from 'react';
 import { User } from 'firebase';
 
-import { auth } from '../../../../firebase';
+import { FirebaseContext, Firebase } from '../../../firebase';
 
+
+interface IAuth {
+  currentUser: User | undefined | null;
+  signOut: () => void;
+}
 
 interface IProps {
   children: ReactNode;
 }
 
-// TODO: use proper type
-export const AuthContext = React.createContext<any>(null);
+
+export const AuthContext = React.createContext<IAuth>({
+  currentUser: null,
+  signOut: () => null
+});
 
 export const AuthProvider = ({ children }: IProps) => {
 
-  const [currentUser, setCurrentUser] = useState<User | undefined | null>(undefined); // TODO: use proper type
+  const firebase = useContext(FirebaseContext) as Firebase;
+  const [currentUser, setCurrentUser] = useState<User | undefined | null>(undefined);
+
+  const signOut = () => {
+    firebase.auth.signOut();
+  }
+  
 
   useEffect(() => {
-    auth.onAuthStateChanged((data) => {
+    firebase.auth.onAuthStateChanged((data) => {
       setCurrentUser(data);
     });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser }}>
+    <AuthContext.Provider value={{ currentUser, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 
-import { PrivateRoute } from '../../libs/ant/src';
-
 import { UserDropdown } from './UserDropdown';
 import { People } from '../people/People/People';
 import { ShiftsView } from '../shifts/ShiftsView';

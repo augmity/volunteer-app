@@ -6,7 +6,7 @@ import { AuthContext } from './Auth';
 // TODO: use proper type
 export const PrivateRoute = ({ component: RouteComponent, ...rest }: any) => {
   
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   // If the Auth state code from the firebase wasn't executed yet,
   // we have to wait for it and display nothing in the meantime.

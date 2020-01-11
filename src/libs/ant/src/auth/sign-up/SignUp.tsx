@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import fb from 'firebase';
 import { Form, Icon, Input, Button, Divider, message } from 'antd';
 
-import { auth, firebase } from '../../../../../firebase';
+import { Firebase, FirebaseContext } from '../../../../firebase';
 
 import './SignUp.css';
 
@@ -16,13 +17,15 @@ interface IProps {
 
 const SignUpForm = ({ history, form }: IProps) => {
 
+  const firebase = useContext(FirebaseContext) as Firebase;
+
   const handleLogin = useCallback(
     event => {
       event.preventDefault();
       form.validateFields(async (err: any, values: any) => {
         if (!err) {
           try {
-            await auth.createUserWithEmailAndPassword(values.email, values.password);
+            await firebase.auth.createUserWithEmailAndPassword(values.email, values.password);
             history.push('/');
           } catch (error) {
             message.error(error.message);
@@ -34,8 +37,8 @@ const SignUpForm = ({ history, form }: IProps) => {
   );
 
   const loginWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
+    const provider = new fb.auth.GoogleAuthProvider();
+    firebase.auth.signInWithPopup(provider)
       .then((result) => {
         history.push('/');
       }).catch((error) => {
@@ -102,43 +105,3 @@ const SignUpWithRouter = withRouter(SignUpForm);
 const WrappedSignUpForm = Form.create({ name: 'signup_form' })(SignUpWithRouter);
 
 export { WrappedSignUpForm as SignUp };
-
-
-
-
-// const SignUp = ({ history }: IProps) => {
-
-//   const handleSignUp = useCallback(async event => {
-//     event.preventDefault();
-//     const { email, password } = event.target.elements;
-//     try {
-//       await auth
-//         .createUserWithEmailAndPassword(email.value, password.value);
-//       history.push("/");
-//     } catch (error) {
-//       alert(error);
-//     }
-//   }, [history]);
-
-//   return (
-//     <div>
-//       <h1>Sign up</h1>
-//       <form onSubmit={handleSignUp}>
-//         <label>
-//           Email
-//           <input name="email" type="email" placeholder="Email" />
-//         </label>
-//         <label>
-//           Password
-//           <input name="password" type="password" placeholder="Password" />
-//         </label>
-//         <button type="submit">Sign Up</button>
-//       </form>
-//       <Link to="/login">Login</Link>
-//     </div>
-//   );
-// };
-
-// const signupWithRouter = withRouter(SignUp)
-
-// export { signupWithRouter as SignUp };
