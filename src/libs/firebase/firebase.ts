@@ -4,6 +4,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+import { addEntityId, timestampToDateTime } from './firebase-helpers';
+
 
 export const FirebaseContext = React.createContext<Firebase | null>(null);
 
@@ -32,7 +34,6 @@ export class Firebase {
 
   preloadCollections(collectionNames: string[]) {
     for (const collectionName of collectionNames) {
-      console.log('collectionName', collectionName);
       this.getCollection(collectionName);
     }
   }
@@ -48,12 +49,19 @@ export class Firebase {
 
       this.db.collection(collectionName)
         .onSnapshot(snapshot => {
-          console.log('snapshot', snapshot);
-          const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as unknown as T));
+          const data = snapshot.docs.map(doc => timestampToDateTime(addEntityId(doc as unknown as T)));
           cachedCollection.subject.next(data);
         })      
     }
       
     return (this.cachedCollections[collectionName] as CachedCollection<T>).subject.asObservable();
+  }
+
+  getCollectionItem<T>(collectionName: string, id: string): T | null | undefined {
+    if (this.cachedCollections[collectionName]) {
+      return (this.cachedCollections[collectionName] as CachedCollection<T>).subject.value.find((item: any) => item.id === id);
+    } else {
+      return null;
+    }
   }
 }
