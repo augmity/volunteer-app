@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Calendar, Drawer, Badge } from 'antd';
 import moment from 'moment';
 
-import { useFirestoreCollection } from '../../libs/firebase';
+import { useFirestoreCollection, useFirebase } from '../../libs/firebase';
 
 import { IShift } from './IShift';
 
@@ -22,6 +22,7 @@ export const ShiftsView: React.FC = () => {
 
   const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
+  const firebase = useFirebase();
   const { data, loading } = useFirestoreCollection<IShift>('shifts');
 
   // Generate calendarData object that helps to populate the calendar
@@ -65,6 +66,14 @@ export const ShiftsView: React.FC = () => {
     );
   }
 
+  const onAdd = (value: Partial<IShift>) => {
+    firebase.db.collection('shifts')
+      .add(value)
+      .then(() => {
+        setFormVisible(false);
+      })
+  }
+
   return (
     <>
       <div className="header" style={{ padding: '16px 0'}}>
@@ -90,7 +99,11 @@ export const ShiftsView: React.FC = () => {
           width="400"
           style={{ position: 'absolute' }}
         >
-          <ShiftFormComponent />
+          <ShiftFormComponent
+            value={null}
+            onSubmit={onAdd}
+            onCancel={() => setFormVisible(false)}
+          />
         </Drawer>
       </div>
     </>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { IShift } from '../IShift';
@@ -10,17 +10,31 @@ const { RangePicker } = DatePicker;
 interface IProps {
   form: WrappedFormUtils;
   value: IShift | null;
-  onSubmit: () => void;
+  onSubmit: (value: Partial<IShift>) => void;
   onCancel: () => void;
 }
 
 
-const ShiftFormComponent: React.FC<IProps> = ({ form }) => {
+const ShiftFormComponent: React.FC<IProps> = ({ form, onCancel, onSubmit }) => {
 
   const { getFieldDecorator } = form;
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    form.validateFields((err, values) => {
+      if (!err) {
+        const entity: Partial<IShift> = {
+          name: values.name,
+          fromDateTime: values.fromTo[0].toDate(),
+          toDateTime: values.fromTo[1].toDate(),
+        }
+        onSubmit(entity);
+      }
+    });
+  };
+
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={handleSubmit}>
       <Form.Item label="Name">
         {getFieldDecorator('name', {
           rules: [
@@ -43,10 +57,14 @@ const ShiftFormComponent: React.FC<IProps> = ({ form }) => {
           <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />,
         )}
       </Form.Item>
+      <div>
+        <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>Add</Button>
+        <Button onClick={onCancel}>Cancel</Button>
+      </div>
     </Form>
   );
 }
 
-const AntdShiftFormForm = Form.create({ name: 'ShiftForm' })(ShiftFormComponent);
+const AntdShiftFormForm = Form.create<IProps>({ name: 'ShiftForm' })(ShiftFormComponent);
 
 export { AntdShiftFormForm as ShiftFormComponent };
