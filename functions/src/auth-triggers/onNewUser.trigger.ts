@@ -7,7 +7,7 @@ export const onUserSignUp = functions.auth.user().onCreate((user) => {
     .collection('users')
     .doc(user.uid)
     .set({
-      name: user.displayName,
+      name: (user.displayName) ? user.displayName : user.email,
       email: user.email,
       photoUri: user.photoURL,
       photoLargeUri: user.photoURL,
