@@ -8,6 +8,6 @@ export interface IShift {
   toDateTime: Date;
   minPeople?: number;
   maxPeople?: number;
-  people?: IPerson[] | null;
+  people?: string[];
   color?: string;
 }

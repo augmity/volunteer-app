@@ -8,11 +8,11 @@ interface IProps {
   data: IPerson[] | undefined;
 }
 
-export const PeopleInlineList: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ data }) => {
+export const PeopleInlineList: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ data, style }) => {
 
   return (
-    <div className="people-inline-list">
-      {data?.map(person => <PersonAvatar className="people-inline-list-item" model={person} showHint={true} />)}
+    <div className="people-inline-list" style={style}>
+      {data?.map(person => <PersonAvatar className="people-inline-list-item" model={person} showHint={true} key={person.id} />)}
     </div>
   );
 }
