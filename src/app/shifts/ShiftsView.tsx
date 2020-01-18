@@ -9,8 +9,6 @@ import { IShift } from './IShift';
 import { ShiftFormComponent } from './ShiftForm/ShiftForm';
 import { Shift } from './Shift';
 
-import './ShiftsView.css';
-
 
 interface CalendarData {
   [key: string]: IShift[];

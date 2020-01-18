@@ -4,7 +4,7 @@ export const addEntityId = (doc: any): any => {
 
 export const timestampToDateTime = (entity: any): any => {
   for (const key of Object.keys(entity)) {
-    if (entity[key].toDate) {
+    if (entity[key] && entity[key].toDate && (typeof entity[key].toDate === 'function')) {
       entity[key] = entity[key].toDate();
     } 
   }
