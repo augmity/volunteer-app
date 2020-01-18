@@ -1,6 +1,7 @@
 import React from 'react';
-import { List, Avatar } from 'antd';
+import { List } from 'antd';
 
+import { PersonAvatar } from '../PersonAvatar';
 import { IPerson } from '../IPerson';
 import './PeopleList.css';
 
@@ -28,7 +29,7 @@ export const PeopleList: React.FC<IPeopleListProps> = ({ data, loading, onSelect
       renderItem={item => (
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar src={item.photoUri} />}
+            avatar={<PersonAvatar model={item} />}
             title={<a onClick={() => selectItem(item)}>{item.name}</a>}
             description={item.email}
           />
