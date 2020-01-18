@@ -12,7 +12,7 @@ interface IProps {
   id: string;
 }
 
-export const Shift: React.FC<IProps> = ({ id }) => {
+export const Shift: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ id, style }) => {
 
   const shift = useShift(id);
   const people = useResolvePeopleForShift(shift);
@@ -23,7 +23,7 @@ export const Shift: React.FC<IProps> = ({ id }) => {
   }
 
   return (
-    <div style={{ padding: 16, minWidth: 300 }}>
+    <div style={{ padding: 16, minWidth: 400, ...style }}>
       {(shift) ? (
         <>
           <h2 style={{ marginBottom: 16 }}>{shift.name}</h2>

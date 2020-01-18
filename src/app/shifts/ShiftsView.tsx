@@ -61,10 +61,15 @@ export const ShiftsView: React.FC = () => {
               event.stopPropagation();
               onShiftClick(item);
           }}>
-            <Badge status="success" text={item.name} style={{
-              cursor: 'pointer',
-              display: 'block',
-              paddingLeft: 6 }}
+            <Badge
+              status="success"
+              text={item.name}
+              style={{
+                cursor: 'pointer',
+                display: 'block',
+                paddingLeft: 6,
+                fontWeight: 500,
+             }}
             />           
           </div>
         ))}
@@ -98,7 +103,7 @@ export const ShiftsView: React.FC = () => {
         <div style={{
           display: 'flex',
         }}>
-          {selectedShiftId && <Shift id={selectedShiftId} />}
+          {selectedShiftId && <Shift id={selectedShiftId} style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}} />}
           <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
         </div>
 
