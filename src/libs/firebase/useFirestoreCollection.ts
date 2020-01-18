@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from './firebase';
 
 export interface UseFirestoreCollectionResult<T> {
-  data: T[];
+  data: T[] | undefined;
   loading: boolean;
 }
 
 export const useFirestoreCollection = <T>(collectionName: string): UseFirestoreCollectionResult<T> => {
 
   const firebase = useContext(FirebaseContext) as Firebase;
-  const [data, setData] = useState<T[]>([]);
+  const [data, setData] = useState<T[] | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -23,8 +23,7 @@ export const useFirestoreCollection = <T>(collectionName: string): UseFirestoreC
     return () => {
       observable.unsubscribe();
     }
-  },
-  [])
+  }, [])
 
   return { data, loading };
 }

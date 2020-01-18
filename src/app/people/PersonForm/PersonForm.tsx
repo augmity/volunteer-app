@@ -11,7 +11,6 @@ interface IProps {
 
 const PersonFormComponent: React.FC<IProps> = ({ form }) => {
 
-  console.log('form', form);
   const { getFieldDecorator } = form;
 
   return (

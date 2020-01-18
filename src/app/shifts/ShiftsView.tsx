@@ -22,23 +22,25 @@ export const ShiftsView: React.FC = () => {
 
   const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
+  const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const firebase = useFirebase();
   const { data, loading } = useFirestoreCollection<IShift>('shifts');
 
   // Generate calendarData object that helps to populate the calendar
   const calendarData: CalendarData = {};
-  for (const shift of data) {
-    const hash = hashMomentDate(moment(shift.fromDateTime));
-    if (!calendarData[hash]) {
-      calendarData[hash] = []; 
+  if (data) {
+    for (const shift of data) {
+      const hash = hashMomentDate(moment(shift.fromDateTime));
+      if (!calendarData[hash]) {
+        calendarData[hash] = []; 
+      }
+      calendarData[hash].push(shift);
     }
-    calendarData[hash].push(shift);
   }
 
 
-  // const onShiftClick = (shift: IShift) => {
-  const onShiftClick = (shift: any) => {
-    console.log('shift', shift);
+  const onShiftClick = (shift: IShift) => {
+    setSelectedShiftId(shift.id);
   }
 
   const dateCellRender = (value: any) => {
@@ -76,6 +78,7 @@ export const ShiftsView: React.FC = () => {
 
   return (
     <>
+      <div>{ selectedShiftId }</div>
       <div className="header" style={{ padding: '16px 0'}}>
         <Button type="primary" size="small" onClick={() => setFormVisible(true)}>
           Add
