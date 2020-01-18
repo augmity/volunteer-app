@@ -3,6 +3,7 @@ import { Form, Input, DatePicker, Button } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { IShift } from '../IShift';
+import TextArea from 'antd/lib/input/TextArea';
 
 
 const { RangePicker } = DatePicker;
@@ -25,6 +26,7 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, onCancel, onSubmit }) => {
       if (!err) {
         const entity: Partial<IShift> = {
           name: values.name,
+          description: values.description,
           fromDateTime: values.fromTo[0].toDate(),
           toDateTime: values.fromTo[1].toDate(),
         }
@@ -57,6 +59,11 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, onCancel, onSubmit }) => {
           <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />,
         )}
       </Form.Item>
+
+      <Form.Item label="Description">
+        {getFieldDecorator('description')(<TextArea />)}
+      </Form.Item>
+
       <div>
         <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>Add</Button>
         <Button onClick={onCancel}>Cancel</Button>

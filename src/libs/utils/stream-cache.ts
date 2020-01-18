@@ -25,6 +25,10 @@ export class StreamCache<K, V> {
     }
   }
 
+  value(key: K): V | undefined {
+    return this.has(key) ? this.cache.get(key)!.subject.value : undefined;
+  }
+
   asObservable(key: K): Observable<V | undefined> {
     return this.has(key) ? this.cache.get(key)!.subject.asObservable() : of(undefined);
   }

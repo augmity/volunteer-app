@@ -46,12 +46,32 @@ export class Firebase {
     return this.cache.asObservable(collectionName);
   }
 
-  getCollectionItem<T>(collectionName: string, id: string): T | null | undefined {
-    return null;
-    // if (this.cachedCollections[collectionName]) {
-    //   return (this.cachedCollections[collectionName] as CachedCollection<T>).subject.value.find((item: any) => item.id === id);
-    // } else {
-    //   return null;
-    // }
+  getCollectionItem<T>(collectionName: string, id: string): Promise<T | undefined> {
+ 
+    // Try to get the item from the cache first
+    const collection = this.cache.value(collectionName);
+    if (collection) {
+      const item = (collection as any[]).find(el => el.id === id);
+      if (item) {
+        return Promise.resolve(item);
+      }
+    }
+
+    console.log('not in cache!', collectionName, id);
+
+    const docRef = this.db
+      .collection(collectionName)
+      .doc(id);
+
+    return docRef.get().then(doc => {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        return timestampToDateTime(doc.data()) as T;
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        return undefined;
+      }
+    });
   }
 }

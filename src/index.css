@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  grid-gap: 4px;
+}
+
+.info-grid-label {
+  grid-column: 1 / 2;
+  color: #6f7782;
+}
+
+.info-grid-value {
+  grid-column: 2 / 3;
+}
+
+
+
+.ant-fullcalendar-fullscreen .ant-fullcalendar-date:hover {
+  background: none !important;
+  cursor: default !important;
+}

@@ -7,6 +7,8 @@ import { useFirestoreCollection, useFirebase } from '../../libs/firebase';
 import { IShift } from './IShift';
 
 import { ShiftFormComponent } from './ShiftForm/ShiftForm';
+import { Shift } from './Shift';
+
 import './ShiftsView.css';
 
 
@@ -22,6 +24,7 @@ export const ShiftsView: React.FC = () => {
 
   const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
+  // const [selectedShiftId, setSelectedShiftId] = useState<string | null>('SjWIQt2a3UIQgDyMvQkc');
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const firebase = useFirebase();
   const { data, loading } = useFirestoreCollection<IShift>('shifts');
@@ -55,13 +58,16 @@ export const ShiftsView: React.FC = () => {
         {cellData.map(item => (
           <div 
             key={item.id}
-            style={{ cursor: 'pointer' }}
             onClick={(event) => {
               event.preventDefault();
               event.stopPropagation();
               onShiftClick(item);
           }}>
-            <Badge status="success" text={item.name} />           
+            <Badge status="success" text={item.name} style={{
+              cursor: 'pointer',
+              display: 'block',
+              paddingLeft: 6 }}
+            />           
           </div>
         ))}
       </div>
@@ -78,7 +84,6 @@ export const ShiftsView: React.FC = () => {
 
   return (
     <>
-      <div>{ selectedShiftId }</div>
       <div className="header" style={{ padding: '16px 0'}}>
         <Button type="primary" size="small" onClick={() => setFormVisible(true)}>
           Add
@@ -89,9 +94,16 @@ export const ShiftsView: React.FC = () => {
         style={{
           overflow: 'hidden',
           position: 'relative',
+          background: '#fff'
         }}
       >
-        <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
+        <div style={{
+          display: 'flex',
+        }}>
+          {selectedShiftId && <Shift id={selectedShiftId} />}
+          <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
+        </div>
+
         <Drawer
           title={formValue ? 'Edit' : 'Add'}
           placement="left"
