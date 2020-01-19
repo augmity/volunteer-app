@@ -1,1 +1,2 @@
-export { addCreatedModifiedDate } from './addCreatedModifiedDate.trigger';
+export { addCreatedModifiedOn } from './addCreatedModifiedOn.trigger';
+export { addShift } from './addShift.trigger';

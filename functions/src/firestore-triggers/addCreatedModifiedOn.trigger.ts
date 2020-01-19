@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
-export const addCreatedModifiedDate = (collectionName: string) => {
+export const addCreatedModifiedOn = (collectionName: string) => {
   
   return functions.firestore
     .document(`${collectionName}/{id}`)
