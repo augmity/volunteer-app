@@ -26,7 +26,7 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, onCancel, onSubmit }) => {
       if (!err) {
         const entity: Partial<IShift> = {
           name: values.name,
-          description: values.description,
+          description: values.description || null,
           fromDateTime: values.fromTo[0].toDate(),
           toDateTime: values.fromTo[1].toDate(),
         }

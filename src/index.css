@@ -23,6 +23,8 @@ code {
 .info-grid-label {
   grid-column: 1 / 2;
   color: #6f7782;
+  font-size: 12px;
+  align-self: center;
 }
 
 .info-grid-value {
@@ -34,4 +36,10 @@ code {
 .ant-fullcalendar-fullscreen .ant-fullcalendar-date:hover {
   background: none !important;
   cursor: default !important;
+}
+
+
+/* Conversations */
+.ant-comment-inner {
+  padding: 1px 0 !important;
 }

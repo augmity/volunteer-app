@@ -1,11 +1,12 @@
 import React from 'react';
-import { Skeleton } from 'antd';
+import { Skeleton, Divider } from 'antd';
 import moment from 'moment';
 
 import { useShift } from './useShift';
 import { PeopleInlineList } from '../people/PeopleInlineList';
 import { PeopleSelector } from '../people/PeopleSelector';
 import { useResolvePeopleForShift } from './useResolvePeopleForShift';
+import { Conversation } from '../../libs/conversations';
 
 
 interface IProps {
@@ -49,6 +50,10 @@ export const Shift: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
           <div>
             {shift.description}
           </div>
+
+          <Divider />
+        
+          <Conversation />
 
         </>
       ) : (
