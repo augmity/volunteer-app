@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Icon, Button } from 'antd';
 
 import { UserDropdown } from './UserDropdown';
+import { LocationsMainView } from '../locations/LocationsMainView';
 import { PeopleMainView } from '../people/PeopleMainView';
 import { ShiftsView } from '../shifts/ShiftsView';
 
@@ -21,7 +22,7 @@ export const Home = () => {
   });
 
   const location = useLocation();
-  useLayoutEffect(() => {
+  useEffect(() => {
     setSelectedMenuItem(location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '');
   }, [location]);
 
@@ -40,6 +41,18 @@ export const Home = () => {
               <span>Shifts</span>
             </Link>
           </Menu.Item>
+          {/* <Menu.Item key="jobs">
+            <Link to="/jobs">
+              <Icon type="snippets" />
+              <span>Jobs</span>
+            </Link>
+          </Menu.Item> */}
+          <Menu.Item key="locations">
+            <Link to="/locations">
+              <Icon type="environment" />
+              <span>Locations</span>
+            </Link>
+          </Menu.Item>
           <Menu.Item key="people">
             <Link to="/people">
               <Icon type="user" />
@@ -53,13 +66,14 @@ export const Home = () => {
         <Header id="header" style={{ alignItems: 'baseline' }}>
           <h4 style={{ marginLeft: 16 }}>
             <Link to="/">Volunteer App</Link>
+            {/* <span style={{ marginLeft: 16, color: '#555' }}>(▰˘◡˘▰)</span> */}
           </h4>
 
           <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>
 
           <UserDropdown className="user-dropdown" />
         </Header>
-        <Content style={{ margin: '0 16px' }}>
+        <Content style={{ margin: '0 16px', display: 'flex', flexDirection: 'column' }}>
           
           { showWizard && <Wizard style={{ marginTop: 16, marginBottom: 4 }} />}
 
@@ -67,6 +81,7 @@ export const Home = () => {
             <Route exact path="/">
               <Redirect to="/shifts" />
             </Route>
+            <Route path="/locations" component={LocationsMainView} />
             <Route path="/shifts" component={ShiftsView} />
             <Route path="/people" component={PeopleMainView} />
           </Switch>
