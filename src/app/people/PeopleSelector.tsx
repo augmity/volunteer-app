@@ -9,8 +9,8 @@ const { Option } = Select;
 
 
 interface IProps {
-  model: string[]; // input: array of people ids
-  onModelChange: (value: string[]) => void; // output: array of people ids
+  model: string[]; // input: array of ids
+  onModelChange: (value: string[]) => void; // output: array of ids
 }
 
 export const PeopleSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ model, onModelChange, className, style }) => {

@@ -1,13 +1,12 @@
-import { Person } from '../people/Person';
-
-export interface IShift {
+export interface Shift {
   id: string;
   name: string;
-  description: string;
   fromDateTime: Date;
   toDateTime: Date;
   minPeople?: number;
   maxPeople?: number;
-  people?: string[];
   color?: string;
+  job: string;
+  location: string;
+  people: string[];
 }

@@ -6,7 +6,7 @@ import { UserDropdown } from './UserDropdown';
 import { LocationsMainView } from '../locations';
 import { JobsMainView } from '../jobs';
 import { PeopleMainView } from '../people/PeopleMainView';
-import { ShiftsView } from '../shifts/ShiftsView';
+import { ShiftsMainView } from '../shifts/ShiftsMainView';
 
 import './Home.css';
 import { Wizard } from './Wizard';
@@ -84,7 +84,7 @@ export const Home = () => {
             </Route>
             <Route path="/jobs" component={JobsMainView} />
             <Route path="/locations" component={LocationsMainView} />
-            <Route path="/shifts" component={ShiftsView} />
+            <Route path="/shifts" component={ShiftsMainView} />
             <Route path="/people" component={PeopleMainView} />
           </Switch>
         </Content>

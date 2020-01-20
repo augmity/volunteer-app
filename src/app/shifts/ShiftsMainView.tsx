@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 import { Button, Calendar, Drawer, Badge } from 'antd';
 import moment from 'moment';
 
-import { useFirestoreCollection, useFirebase } from '../../libs/firebase';
+import { useFirestoreCollection } from '../../libs/firebase';
 
-import { IShift } from './IShift';
-
-import { ShiftFormComponent } from './ShiftForm/ShiftForm';
 import { Shift } from './Shift';
+
+import { ShiftForm } from './ShiftForm';
+import { ShiftSummary } from './ShiftSummary';
 
 
 interface CalendarData {
-  [key: string]: IShift[];
+  [key: string]: Shift[];
 }
 
 const hashMomentDate = (date: moment.Moment): string => {
   return date.format('YYYY_MM_DD');
 }
 
-export const ShiftsView: React.FC = () => {
+export const ShiftsMainView: React.FC = () => {
 
-  const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
-  const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
-  const firebase = useFirebase();
-  const { data, loading } = useFirestoreCollection<IShift>('shifts');
+  // const [selectedItemId, setSelectedItemId] = useState<string | null>('SjWIQt2a3UIQgDyMvQkc');
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const { data, loading } = useFirestoreCollection<Shift>('shifts');
 
   // Generate calendarData object that helps to populate the calendar
   const calendarData: CalendarData = {};
@@ -38,9 +37,15 @@ export const ShiftsView: React.FC = () => {
     }
   }
 
+  const edit = (item: Shift) => {
+    setSelectedItemId(item.id);
+    setFormVisible(true);
+  }
 
-  const onShiftClick = (shift: IShift) => {
-    setSelectedShiftId(shift.id);
+  const add = () => {
+    setSelectedItemId(null);
+    setFormVisible(true);
+    console.log('selectedItemId', selectedItemId);
   }
 
   const dateCellRender = (value: any) => {
@@ -58,7 +63,7 @@ export const ShiftsView: React.FC = () => {
             onClick={(event) => {
               event.preventDefault();
               event.stopPropagation();
-              onShiftClick(item);
+              setSelectedItemId(item.id);
           }}>
             <Badge
               status="success"
@@ -76,18 +81,10 @@ export const ShiftsView: React.FC = () => {
     );
   }
 
-  const onAdd = (value: Partial<IShift>) => {
-    firebase.db.collection('shifts')
-      .add(value)
-      .then(() => {
-        setFormVisible(false);
-      })
-  }
-
   return (
     <>
       <div className="header" style={{ padding: '16px 0'}}>
-        <Button type="primary" size="small" onClick={() => setFormVisible(true)}>
+        <Button type="primary" size="small" onClick={add}>
           Add
         </Button>
       </div>
@@ -102,12 +99,20 @@ export const ShiftsView: React.FC = () => {
         <div style={{
           display: 'flex',
         }}>
-          {selectedShiftId && <Shift id={selectedShiftId} style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}} />}
+          { selectedItemId &&
+            <ShiftSummary
+              id={selectedItemId}
+              style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}}
+            >
+              <a onClick={() => setFormVisible(true)}>edit</a>
+            </ShiftSummary>
+          }
+
           <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
         </div>
 
         <Drawer
-          title={formValue ? 'Edit' : 'Add'}
+          title={selectedItemId ? 'Edit' : 'Add'}
           placement="left"
           closable={false}
           onClose={() => setFormVisible(false)}
@@ -116,9 +121,9 @@ export const ShiftsView: React.FC = () => {
           width="400"
           style={{ position: 'absolute' }}
         >
-          <ShiftFormComponent
-            value={null}
-            onSubmit={onAdd}
+          <ShiftForm
+            id={selectedItemId}
+            onSubmit={() => setFormVisible(false)}
             onCancel={() => setFormVisible(false)}
           />
         </Drawer>

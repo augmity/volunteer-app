@@ -4,8 +4,6 @@ import moment from 'moment';
 
 import { useShift } from './useShift';
 import { PeopleInlineList } from '../people/PeopleInlineList';
-import { PeopleSelector } from '../people/PeopleSelector';
-import { useResolvePeopleForShift } from './useResolvePeopleForShift';
 import { Conversation } from '../../libs/conversations';
 
 
@@ -13,21 +11,18 @@ interface IProps {
   id: string;
 }
 
-export const Shift: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ id, style }) => {
+export const ShiftSummary: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ id, style, children }) => {
 
-  const shift = useShift(id);
-  const people = useResolvePeopleForShift(shift);
-
-
-  const updatePeople = (value: string[]) => {
-    console.log('value', value);
-  }
+  const { shift, people, location, job } = useShift(id);
 
   return (
     <div style={{ padding: 16, minWidth: 400, ...style }}>
       {(shift) ? (
         <>
-          <h2 style={{ marginBottom: 16 }}>{shift.name}</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+            <h2 style={{ marginBottom: 16 }}>{job?.name}</h2>
+            {children}
+          </div>
 
           {/* <PeopleSelector model={[]} onModelChange={updatePeople} /> */}
 
@@ -40,7 +35,7 @@ export const Shift: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
             <div className="info-grid-value">{moment(shift.toDateTime).format('h:mm A')}</div>
             <div className="info-grid-label">Location</div>
             <div className="info-grid-value" style={{ display: 'flex', flexDirection: 'column'}}>
-              <span>Volunteer Centre</span>
+              <span>{location?.name}</span>
               <a href="#">(map)</a>
             </div>
           </div>
@@ -48,7 +43,7 @@ export const Shift: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
           {people && <PeopleInlineList data={people} style={{ marginBottom: 24 }} />}
 
           <div>
-            {shift.description}
+            {job?.description}
           </div>
 
           <Divider />

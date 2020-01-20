@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from '../../libs/firebase';
 
-import { IShift } from './IShift';
+import { Shift } from './Shift';
 import { Person } from '../people/Person';
 
 
-export const useResolvePeopleForShift = (shift: IShift | undefined): Person[] | undefined => {
+export const useResolvePeopleForShift = (shift: Shift | undefined): Person[] | undefined => {
 
   const firebase = useContext(FirebaseContext) as Firebase;
   const [people, setPeople] = useState<Person[]>();

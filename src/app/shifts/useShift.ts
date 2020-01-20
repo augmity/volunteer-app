@@ -1,20 +1,51 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from '../../libs/firebase';
 
-import { IShift } from './IShift';
+import { Shift } from './Shift';
+import { Job } from '../jobs';
+import { Location } from '../locations';
+import { Person } from '../people/Person';
 
 
-export const useShift = (id: string): IShift | undefined => {
+interface UseShiftResult {
+  shift?: Shift;
+  people?: Person[];
+  job?: Job;
+  location?: Location;
+}
+
+export const useShift = (id: string): UseShiftResult => {
 
   const firebase = useContext(FirebaseContext) as Firebase;
-  const [shift, setShift] = useState<IShift | undefined>();
+  const [shift, setShift] = useState<Shift>();
+  const [people, setPeople] = useState<Person[]>();
+  const [job, setJob] = useState<Job>();
+  const [location, setLocation] = useState<Location>();
 
   useEffect(() => {
-    firebase.getCollectionItem<IShift>('shifts', id)
-      .then(data => {
-        setShift(data);
-      })
+    firebase.getCollectionItem<Shift>('shifts', id)
+      .then(shift => {
+        setShift(shift);
+
+        firebase.getCollectionItem<Job>('jobs', shift!.job)
+          .then(job => {
+            setJob(job);
+          })
+
+        firebase.getCollectionItem<Location>('locations', shift!.location)
+          .then(location => {
+            setLocation(location);
+          })
+
+        if (shift && shift.people) {
+          Promise.all(
+            shift.people.map(id => firebase.getCollectionItem<Person>('users', id))
+          ).then(result => {
+            setPeople(result as Person[]);
+          })
+        }
+      });
   }, [id])
 
-  return shift;
+  return { shift, people, location, job };
 }
