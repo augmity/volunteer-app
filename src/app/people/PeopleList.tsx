@@ -1,20 +1,19 @@
 import React from 'react';
 import { List } from 'antd';
 
-import { PersonAvatar } from '../PersonAvatar';
-import { IPerson } from '../IPerson';
-import './PeopleList.css';
+import { PersonAvatar } from './PersonAvatar';
+import { Person } from './Person';
 
 
 interface IPeopleListProps {
-  data: IPerson[] | undefined;
+  data: Person[] | undefined;
   loading: boolean;
-  onSelectItem?: (item: IPerson) => void;
+  onSelectItem?: (item: Person) => void;
 }
 
 export const PeopleList: React.FC<IPeopleListProps> = ({ data, loading, onSelectItem }) => {
 
-  const selectItem = (item: IPerson) => {
+  const selectItem = (item: Person) => {
     if (onSelectItem) {
       onSelectItem(item);
     }

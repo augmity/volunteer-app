@@ -1,4 +1,4 @@
-import { IPerson } from '../people/IPerson';
+import { Person } from '../people/Person';
 
 export interface IShift {
   id: string;

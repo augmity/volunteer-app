@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 import { useFirestoreCollection } from '../../libs/firebase';
 
-import { IPerson } from './IPerson';
+import { Person } from './Person';
 
 const { Option } = Select;
 
@@ -20,7 +20,7 @@ export const PeopleSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
     ...style
   }
 
-  const { data, loading } = useFirestoreCollection<IPerson>('users');
+  const { data, loading } = useFirestoreCollection<Person>('users');
   
   const children = (data)
     ? data.map(person => <Option key={person.id} value={person.id}>{person.name}</Option>)

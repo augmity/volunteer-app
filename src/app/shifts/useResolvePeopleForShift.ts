@@ -2,20 +2,20 @@ import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from '../../libs/firebase';
 
 import { IShift } from './IShift';
-import { IPerson } from '../people/IPerson';
+import { Person } from '../people/Person';
 
 
-export const useResolvePeopleForShift = (shift: IShift | undefined): IPerson[] | undefined => {
+export const useResolvePeopleForShift = (shift: IShift | undefined): Person[] | undefined => {
 
   const firebase = useContext(FirebaseContext) as Firebase;
-  const [people, setPeople] = useState<IPerson[]>();
+  const [people, setPeople] = useState<Person[]>();
 
   useEffect(() => {
     if (shift && shift.people) {
       Promise.all(
-        shift.people.map(id => firebase.getCollectionItem<IPerson>('users', id))
+        shift.people.map(id => firebase.getCollectionItem<Person>('users', id))
       ).then(result => {
-        setPeople(result as IPerson[]);
+        setPeople(result as Person[]);
       })
     } else {
       setPeople(undefined);

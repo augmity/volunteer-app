@@ -1,13 +1,13 @@
 import React from 'react';
 import { Avatar, Typography, Popover } from 'antd';
 
-import { IPerson } from './IPerson';
+import { Person } from './Person';
 
 
 const { Text } = Typography;
 
 interface IProps {
-  model: IPerson;
+  model: Person;
   showHint?: boolean; 
 }
 

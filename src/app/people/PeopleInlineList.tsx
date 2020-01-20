@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { PersonAvatar } from './PersonAvatar';
-import { IPerson } from './IPerson';
+import { Person } from './Person';
 
 
 interface IProps {
-  data: IPerson[] | undefined;
+  data: Person[] | undefined;
 }
 
 export const PeopleInlineList: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ data, style }) => {
