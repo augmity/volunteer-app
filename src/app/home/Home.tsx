@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Button } from 'antd';
 
 import { UserDropdown } from './UserDropdown';
-import { People } from '../people/People/People';
+import { PeopleMainView } from '../people/PeopleMainView';
 import { ShiftsView } from '../shifts/ShiftsView';
 
 import './Home.css';
+import { Wizard } from './Wizard';
 
 
 const { Header, Content, Sider } = Layout;
 
 export const Home = () => {
 
+  const [showWizard, setShowWizard] = useState(false);
   const [state, setState] = useState({
     collapsed: true,
   });
@@ -49,19 +51,25 @@ export const Home = () => {
       </Sider>
 
       <Layout>
-        <Header id="header">
+        <Header id="header" style={{ alignItems: 'baseline' }}>
           <h4 style={{ marginLeft: 16 }}>
             <Link to="/">Volunteer App</Link>
           </h4>
+
+          <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>
+
           <UserDropdown className="user-dropdown" />
         </Header>
         <Content style={{ margin: '0 16px' }}>
+          
+          { showWizard && <Wizard style={{ marginTop: 16, marginBottom: 4 }} />}
+
           <Switch>
             <Route exact path="/">
               <Redirect to="/shifts" />
             </Route>
             <Route path="/shifts" component={ShiftsView} />
-            <Route path="/people" component={People} />
+            <Route path="/people" component={PeopleMainView} />
           </Switch>
         </Content>
       </Layout>

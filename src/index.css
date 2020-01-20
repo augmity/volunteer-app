@@ -13,6 +13,20 @@ code {
 }
 
 
+/* Layout */
+.content {
+  display: flex;
+  padding: 16px;
+  background: #fff;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+}
+
+
+
 /* Shared components */
 .info-grid {
   display: grid;

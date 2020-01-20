@@ -15,13 +15,11 @@ export const useResolvePeopleForShift = (shift: IShift | undefined): IPerson[] |
       Promise.all(
         shift.people.map(id => firebase.getCollectionItem<IPerson>('users', id))
       ).then(result => {
-        console.log('result', result);
         setPeople(result as IPerson[]);
       })
     } else {
       setPeople(undefined);
     }
-    
   }, [shift])
 
   return people;

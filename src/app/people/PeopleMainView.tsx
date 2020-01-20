@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Button } from 'antd';
 
-import { useFirestoreCollection } from '../../../libs/firebase';
+import { useFirestoreCollection } from '../../libs/firebase';
 
-import { PeopleList } from '../PeopleList/PeopleList';
-import { PersonForm } from '../PersonForm/PersonForm';
+import { PeopleList } from './PeopleList/PeopleList';
+import { PersonForm } from './PersonForm/PersonForm';
 
-import { IPerson } from '../IPerson';
-import './People.css';
+import { IPerson } from './IPerson';
 
 
-export const People: React.FC = () => {
+export const PeopleMainView: React.FC = () => {
 
   const [formMode, setFormMode] = useState<string>('none');
   const [formValue, setFormValue] = useState<IPerson | null>(null);
