@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Icon, Button } from 'antd';
 
@@ -15,12 +15,15 @@ const { Header, Content, Sider } = Layout;
 export const Home = () => {
 
   const [showWizard, setShowWizard] = useState(false);
+  const [selectedMenuItem, setSelectedMenuItem] = useState<string>('');
   const [state, setState] = useState({
     collapsed: true,
   });
 
   const location = useLocation();
-  const menuDefualtSelected = location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '';
+  useLayoutEffect(() => {
+    setSelectedMenuItem(location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '');
+  }, [location]);
 
   const onCollapse = (collapsed: boolean) => {
     setState({ collapsed });
@@ -30,7 +33,7 @@ export const Home = () => {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light" collapsible collapsed={state.collapsed} onCollapse={onCollapse}>
         <div className="logo" />
-        <Menu defaultSelectedKeys={[menuDefualtSelected]} mode="inline">
+        <Menu selectedKeys={[selectedMenuItem]} mode="inline">
           <Menu.Item key="shifts">
             <Link to="/shifts">
               <Icon type="calendar" />
@@ -43,10 +46,6 @@ export const Home = () => {
               <span>People</span>
             </Link>
           </Menu.Item>
-          {/* <Menu.Item key="9">
-            <Icon type="setting" />
-            <span>Settings</span>
-          </Menu.Item> */}
         </Menu>
       </Sider>
 

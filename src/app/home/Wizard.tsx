@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Steps } from 'antd';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, useLocation } from 'react-router-dom';
 
 
 const routes = [
@@ -13,6 +13,14 @@ const routes = [
 const WizardComponent: React.FC<RouteComponentProps & React.HTMLAttributes<HTMLDivElement>> = ({ history, style }) => {
 
   const [current, setCurrent] = useState<number>(0);
+  let location = useLocation();
+  
+  useEffect(() => {
+    const idx = routes.findIndex(item => item === location.pathname);
+    if (idx > -1) {
+      setCurrent(idx);
+    }
+  }, [location]);
 
   const onChange = (current: number) => {
     setCurrent(current);
