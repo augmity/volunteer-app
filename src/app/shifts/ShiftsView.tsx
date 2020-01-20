@@ -22,8 +22,7 @@ export const ShiftsView: React.FC = () => {
 
   const [formValue, setFormValue] = useState<IShift | null>(null);
   const [formVisible, setFormVisible] = useState<boolean>(false);
-  const [selectedShiftId, setSelectedShiftId] = useState<string | null>('SjWIQt2a3UIQgDyMvQkc');
-  // const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
+  const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const firebase = useFirebase();
   const { data, loading } = useFirestoreCollection<IShift>('shifts');
 

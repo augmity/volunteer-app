@@ -4,27 +4,26 @@ import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { useFirestoreDocument, useFirebase } from '../../libs/firebase';
 
-import { Location } from './Location';
-import { LocationFormBody } from './LocationFormBody';
+import { Job } from './Job';
+import { JobFormBody } from './JobFormBody';
 
 
 interface IProps {
   form: WrappedFormUtils;
   id: string | null;
-  onSubmit: (value: Partial<Location>) => void;
+  onSubmit: (value: Partial<Job>) => void;
   onCancel: () => void;
 }
 
-const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) => {
+const JobFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) => {
 
   const firebase = useFirebase();
-  const doc = useFirestoreDocument<Location>('locations', id);
+  const doc = useFirestoreDocument<Job>('jobs', id);
 
   useEffect(() => {
     if (doc as any) {
       form.setFieldsValue({
         name: doc?.name,
-        address: doc?.address,
         description: doc?.description
       });
     } else {
@@ -36,9 +35,8 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
     e.preventDefault();
     form.validateFields(async (err, values) => {
       if (!err) {
-        const entity: Partial<Location> = {
+        const entity: Partial<Job> = {
           name: values.name,
-          address: values.address || null,
           description: values.description || null,
         }
         await save(entity);
@@ -47,14 +45,14 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
     });
   };
 
-  const save = (entity: Partial<Location>): Promise<any> => {
+  const save = (entity: Partial<Job>): Promise<any> => {
     console.log('entity', entity);
     if (id) {
-      return firebase.db.collection('locations')
+      return firebase.db.collection('jobs')
         .doc(id)
         .set(entity, { merge: true });
     } else {
-      return firebase.db.collection('locations')
+      return firebase.db.collection('jobs')
         .add(entity)
         .then(() => {
           form.resetFields();
@@ -64,14 +62,14 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
   }
 
   return (
-    <LocationFormBody form={form}>
+    <JobFormBody form={form}>
       <div>
         <Button type="primary" htmlType="submit" style={{ marginRight: 8 }} onClick={handleSubmit}>Save</Button>
         <Button onClick={onCancel}>Cancel</Button>
       </div>
-    </LocationFormBody>
+    </JobFormBody>
   );
 }
 
-const AntdForm = Form.create<IProps>({ name: 'LocationForm' })(LocationFormComponent);
-export { AntdForm as LocationForm };
+const AntdForm = Form.create<IProps>({ name: 'JobForm' })(JobFormComponent);
+export { AntdForm as JobForm };

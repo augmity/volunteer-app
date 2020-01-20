@@ -3,7 +3,8 @@ import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Icon, Button } from 'antd';
 
 import { UserDropdown } from './UserDropdown';
-import { LocationsMainView } from '../locations/LocationsMainView';
+import { LocationsMainView } from '../locations';
+import { JobsMainView } from '../jobs';
 import { PeopleMainView } from '../people/PeopleMainView';
 import { ShiftsView } from '../shifts/ShiftsView';
 
@@ -41,12 +42,12 @@ export const Home = () => {
               <span>Shifts</span>
             </Link>
           </Menu.Item>
-          {/* <Menu.Item key="jobs">
+          <Menu.Item key="jobs">
             <Link to="/jobs">
-              <Icon type="snippets" />
+              <Icon type="project" />
               <span>Jobs</span>
             </Link>
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item key="locations">
             <Link to="/locations">
               <Icon type="environment" />
@@ -81,6 +82,7 @@ export const Home = () => {
             <Route exact path="/">
               <Redirect to="/shifts" />
             </Route>
+            <Route path="/jobs" component={JobsMainView} />
             <Route path="/locations" component={LocationsMainView} />
             <Route path="/shifts" component={ShiftsView} />
             <Route path="/people" component={PeopleMainView} />

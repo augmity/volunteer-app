@@ -8,7 +8,7 @@ interface IProps {
   form: WrappedFormUtils;
 }
 
-export const LocationFormBody: React.FC<IProps> = ({ form, children }) => {
+export const JobFormBody: React.FC<IProps> = ({ form, children }) => {
 
   const { getFieldDecorator } = form;
 
@@ -23,10 +23,6 @@ export const LocationFormBody: React.FC<IProps> = ({ form, children }) => {
             },
           ],
         })(<Input />)}
-      </Form.Item>
-
-      <Form.Item label="Address">
-        {getFieldDecorator('address')(<Input />)}
       </Form.Item>
 
       <Form.Item label="Description">
