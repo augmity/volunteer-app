@@ -61,7 +61,6 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) 
   };
 
   const save = (entity: Partial<Shift>): Promise<any> => {
-    console.log('entity', entity);
     if (id) {
       return firebase.db.collection('shifts')
         .doc(id)
@@ -71,6 +70,10 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) 
         .add(entity)
         .then(() => {
           form.resetFields();
+          setJob(undefined);
+          setLocation(undefined);
+          setName(undefined);
+          setPeople([]);
           return null;
         })
     }

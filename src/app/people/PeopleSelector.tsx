@@ -4,6 +4,7 @@ import { Select } from 'antd';
 import { useFirestoreCollection } from '../../libs/firebase';
 
 import { Person } from './Person';
+import { PersonAvatar } from './PersonAvatar';
 
 const { Option } = Select;
 
@@ -23,7 +24,7 @@ export const PeopleSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
   const { data, loading } = useFirestoreCollection<Person>('users');
   
   const children = (data)
-    ? data.map(person => <Option key={person.id} value={person.id}>{person.name}</Option>)
+    ? data.map(person => <Option key={person.id} value={person.id} label={person.name}><PersonAvatar model={person} style={{ marginRight: 8 }} />{person.name}</Option>)
     : [];
   
   const handleChange = (value: string[]) => {
