@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Firebase, FirebaseContext } from './libs/firebase';
-import { AuthProvider, PrivateRoute } from './libs/ant/src';
-import { Login, SignUp } from './libs/ant/src';
+import { AuthProvider, PrivateRoute, Login, SignUp } from './libs/auth';
 
 import { Home } from './app/home/Home';
 import './App.css';

@@ -2,10 +2,10 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { addEntityId, timestampToDateTime } from './firebase-helpers';
-import { StreamCache } from '../utils';
+import { StreamCache } from '../../utils';
 
 
 export const FirebaseContext = React.createContext<Firebase | null>(null);

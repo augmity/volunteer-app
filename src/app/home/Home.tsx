@@ -84,8 +84,8 @@ export const Home = () => {
             </Route>
             <Route path="/jobs" component={JobsMainView} />
             <Route path="/locations" component={LocationsMainView} />
-            <Route path="/shifts" component={ShiftsMainView} />
             <Route path="/people" component={PeopleMainView} />
+            <Route path="/shifts" component={ShiftsMainView} />
           </Switch>
         </Content>
       </Layout>

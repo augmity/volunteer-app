@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Menu, Dropdown, Icon, Avatar } from 'antd';
 
-import { AuthContext } from '../../libs/ant/src';
+import { AuthContext } from '../../libs/auth';
 
 
 export const UserDropdown: React.FC<{ className: string}> = ({ className }) => {

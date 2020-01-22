@@ -1,1 +1,1 @@
-export * from './stream-cache';
+export * from './src';

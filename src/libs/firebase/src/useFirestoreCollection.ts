@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from './firebase';
 
+
 export interface UseFirestoreCollectionResult<T> {
   data: T[] | undefined;
   loading: boolean;

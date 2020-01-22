@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import fb from 'firebase';
 import { Form, Icon, Input, Button, Divider, message } from 'antd';
 
-import { Firebase, FirebaseContext } from '../../../../firebase';
+import { Firebase, FirebaseContext } from '../../../firebase';
 
 import './SignUp.css';
 
