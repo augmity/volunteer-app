@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
-import { Layout, Menu, Icon, Button } from 'antd';
+import { useMediaQuery } from 'react-responsive';
+import { Layout, Menu, Icon, Button, Dropdown } from 'antd';
 
 import { UserDropdown } from './UserDropdown';
 import { LocationsMainView } from '../locations';
@@ -14,66 +15,101 @@ import { Wizard } from './Wizard';
 
 const { Header, Content, Sider } = Layout;
 
+interface MenuItem {
+  uri: string;
+  caption: string;
+  icon: string;
+}
+
+const menu: MenuItem[] = [
+  {
+    uri: 'shifts',
+    caption: 'Shifts',
+    icon: 'calendar',
+  },
+  {
+    uri: 'jobs',
+    caption: 'Jobs',
+    icon: 'project',
+  },
+  {
+    uri: 'locations',
+    caption: 'Locations',
+    icon: 'environment',
+  },
+  {
+    uri: 'people',
+    caption: 'People',
+    icon: 'user',
+  },
+];
+
+
 export const Home = () => {
 
   const [showWizard, setShowWizard] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>('');
-  const [state, setState] = useState({
-    collapsed: true,
-  });
+  const [siderCollapsed, setSiderCollapsed] = useState(true);
 
+  const isBigScreen = useMediaQuery({ minDeviceWidth: 1824 })
   const location = useLocation();
+
   useEffect(() => {
     setSelectedMenuItem(location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '');
   }, [location]);
 
-  const onCollapse = (collapsed: boolean) => {
-    setState({ collapsed });
-  };
+
+  const mobileMenu = (
+    <Menu selectedKeys={[selectedMenuItem]} mode="inline">
+      {menu.map(item => (
+        <Menu.Item key={item.uri}>
+          <Link to={`/${item.uri}`}>
+            <span>{item.caption}</span>
+          </Link>
+        </Menu.Item>
+      ))}
+    </Menu>);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider theme="light" collapsible collapsed={state.collapsed} onCollapse={onCollapse}>
-        <div className="logo" />
-        <Menu selectedKeys={[selectedMenuItem]} mode="inline">
-          <Menu.Item key="shifts">
-            <Link to="/shifts">
-              <Icon type="calendar" />
-              <span>Shifts</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="jobs">
-            <Link to="/jobs">
-              <Icon type="project" />
-              <span>Jobs</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="locations">
-            <Link to="/locations">
-              <Icon type="environment" />
-              <span>Locations</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="people">
-            <Link to="/people">
-              <Icon type="user" />
-              <span>People</span>
-            </Link>
-          </Menu.Item>
-        </Menu>
-      </Sider>
+
+      {isBigScreen && 
+        <Sider theme="light" collapsible collapsed={siderCollapsed} onCollapse={setSiderCollapsed}>
+          <div className="logo" />
+          <Menu selectedKeys={[selectedMenuItem]} mode="inline">
+            {menu.map(item => (
+              <Menu.Item key={item.uri}>
+                <Link to={`/${item.uri}`}>
+                  <Icon type={item.icon} />
+                  <span>{item.caption}</span>
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Sider>
+      }
 
       <Layout>
-        <Header id="header" style={{ alignItems: 'baseline' }}>
-          <h4 style={{ marginLeft: 16 }}>
-            <Link to="/">Volunteer App</Link>
-            {/* <span style={{ marginLeft: 16, color: '#555' }}>(▰˘◡˘▰)</span> */}
-          </h4>
 
-          <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>
+        <Header id="header" style={{ alignItems: 'baseline' }}>
+
+          {(isBigScreen) ? (
+            <h4 style={{ marginLeft: 16 }}>
+              <Link to="/">Volunteer App</Link>
+            </h4>
+          ) : (
+            <Dropdown overlay={mobileMenu} trigger={['click']}>
+              <Button type="link" icon="menu" />
+            </Dropdown>
+          )}
+              
+          {/* <span style={{ marginLeft: 16, color: '#555' }}>(▰˘◡˘▰)</span> */}
+
+          {isBigScreen && <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>}
 
           <UserDropdown className="user-dropdown" />
         </Header>
+
         <Content style={{ margin: '0 16px', display: 'flex', flexDirection: 'column' }}>
           
           { showWizard && <Wizard style={{ marginTop: 16, marginBottom: 4 }} />}
@@ -87,7 +123,9 @@ export const Home = () => {
             <Route path="/people" component={PeopleMainView} />
             <Route path="/shifts" component={ShiftsMainView} />
           </Switch>
+
         </Content>
+
       </Layout>
     </Layout>
   );
