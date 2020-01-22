@@ -12,7 +12,7 @@ import { firebaseConfig } from './config';
 
 
 const firebase = new Firebase(firebaseConfig);
-firebase.preloadCollections(['users', 'shifts']);
+firebase.preloadCollections(['users', 'shifts', 'jobs', 'locations']);
 
 export const App: React.FC = () => {
 
