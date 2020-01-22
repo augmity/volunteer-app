@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Divider, Tag, Skeleton } from 'antd';
+import { Table, Skeleton } from 'antd';
 import moment from 'moment';
 
 import { PeopleInlineList } from '../people/PeopleInlineList';
 
-import { Shift } from './Shift';
-import { LocationInline } from '../locations';
+import { ShiftResolved } from './ShiftResolved';
+import { Person } from '../people';
 
 
 interface IProps {
-  data?: Shift[];
+  data?: ShiftResolved[];
 }
 
 export const ShiftsGridView: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ data, style }) => {
 
-  const [gridData, setGridData] = useState<Shift[]>();
+  const [gridData, setGridData] = useState<ShiftResolved[]>();
 
   useEffect(() => {
     if (data) {
@@ -22,7 +22,7 @@ export const ShiftsGridView: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
       // TODO: Filtering
 
       // Sorting
-      result.sort((a: Shift, b: Shift) => {
+      result.sort((a: ShiftResolved, b: ShiftResolved) => {
         return (moment(a.fromDateTime).unix() - moment(b.fromDateTime).unix());
       });
 
@@ -68,25 +68,22 @@ export const ShiftsGridView: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
     },
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: 'job.name',
       key: 'name',
     },
-    // {
-    //   title: 'Location',
-    //   dataIndex: 'location',
-    //   key: 'location',
-    //   render: (item: string) => <LocationInline id={item} />,
-    // },
-    // {
-    //   title: 'People',
-    //   dataIndex: 'people',
-    //   key: 'people',
-    //   render: (item: Date) => (
-    //     <span>
-    //       {moment(item).format('h:mm A')}
-    //     </span>
-    //   ),
-    // },
+    {
+      title: 'Location',
+      dataIndex: 'location.name',
+      key: 'location',
+    },
+    {
+      title: 'People',
+      dataIndex: 'people',
+      key: 'people',
+      render: (people: Person[]) => (
+        <PeopleInlineList data={people} />
+      ),
+    },
   ];
 
   return (

@@ -10,6 +10,7 @@ import { Shift } from './Shift';
 import { ShiftForm } from './ShiftForm';
 import { ShiftSummary } from './ShiftSummary';
 import { ShiftsGridView } from './ShiftsGridView';
+import { useShifts } from './useShifts';
 
 
 interface CalendarData {
@@ -25,7 +26,11 @@ export const ShiftsMainView: React.FC = () => {
   const [formVisible, setFormVisible] = useState<boolean>(false);
   // const [selectedItemId, setSelectedItemId] = useState<string | null>('SjWIQt2a3UIQgDyMvQkc');
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
   const { data, loading } = useFirestoreCollection<Shift>('shifts');
+
+  const shifts = useShifts();
+
 
   let { path, url } = useRouteMatch();
 
@@ -49,7 +54,6 @@ export const ShiftsMainView: React.FC = () => {
   const add = () => {
     setSelectedItemId(null);
     setFormVisible(true);
-    console.log('selectedItemId', selectedItemId);
   }
 
   const dateCellRender = (value: any) => {
@@ -120,7 +124,7 @@ export const ShiftsMainView: React.FC = () => {
           <Switch>
             {/* Grid View */}
             <Route exact path={`${path}/grid`}>
-              <ShiftsGridView data={data} />
+              <ShiftsGridView data={shifts} />
             </Route>
 
             {/* List View */}
