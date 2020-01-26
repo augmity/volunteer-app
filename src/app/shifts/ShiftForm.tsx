@@ -7,15 +7,13 @@ import { useFirestoreDocument, useFirebase } from '../../libs/firebase';
 import { Shift } from './Shift';
 import { ShiftFormBody } from './ShiftFormBody';
 import { PeopleSelector } from '../people/PeopleSelector';
-import { Person } from '../people/Person';
 import { JobSelector } from '../jobs';
 import { LocationSelector } from '../locations';
 
 
-
 interface IProps {
   form: WrappedFormUtils;
-  id: string | null;
+  id?: string;
   onSubmit: (value: Partial<Shift>) => void;
   onCancel: () => void;
 }
@@ -28,11 +26,10 @@ const ShiftFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) 
   const [name, setName] = useState<string>();
 
   const firebase = useFirebase();
-  const doc = useFirestoreDocument<Shift>('shifts', id);
+  const doc = useFirestoreDocument<Shift>('shifts', id || null);
 
   useEffect(() => {
     if (doc) {
-      console.log('doc', doc);
       setPeople(doc.people || []);
       form.setFieldsValue({
         // TODO: from-to date/time

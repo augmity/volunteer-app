@@ -1,36 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Calendar, Drawer, Badge } from 'antd';
+import { Button, Drawer } from 'antd';
 import { Route, Switch, useRouteMatch, Link } from 'react-router-dom';
-import moment from 'moment';
-
-import { useFirestoreCollection } from '../../libs/firebase';
 
 import { Shift } from './Shift';
 
 import { ShiftForm } from './ShiftForm';
-import { ShiftSummary } from './ShiftSummary';
 import { ShiftsGridView } from './ShiftsGridView';
 import { useShifts } from './useShifts';
 import { ShiftFilters, ShiftsFilters } from './ShiftsFilters';
 import { ShiftResolved } from './ShiftResolved';
+import { ShiftsCalendarView } from './ShiftsCalendarView';
 
-
-interface CalendarData {
-  [key: string]: Shift[];
-}
-
-const hashMomentDate = (date: moment.Moment): string => {
-  return date.format('YYYY_MM_DD');
-}
 
 export const ShiftsMainView: React.FC = () => {
 
   const [formVisible, setFormVisible] = useState<boolean>(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [filters, setFilters] = useState<ShiftFilters>({});
   const [filteredData, setFilteredData] = useState<ShiftResolved[] | undefined>();
-
-  const { data, loading } = useFirestoreCollection<Shift>('shifts');
 
   const shifts = useShifts();
 
@@ -54,59 +40,8 @@ export const ShiftsMainView: React.FC = () => {
 
   let { path, url } = useRouteMatch();
 
-  // Generate calendarData object that helps to populate the calendar
-  const calendarData: CalendarData = {};
-  if (data) {
-    for (const shift of data) {
-      const hash = hashMomentDate(moment(shift.fromDateTime));
-      if (!calendarData[hash]) {
-        calendarData[hash] = []; 
-      }
-      calendarData[hash].push(shift);
-    }
-  }
-
-  const edit = (item: Shift) => {
-    setSelectedItemId(item.id);
-    setFormVisible(true);
-  }
-
   const add = () => {
-    setSelectedItemId(null);
     setFormVisible(true);
-  }
-
-  const dateCellRender = (value: any) => {
-    const cellData = calendarData[hashMomentDate(value)];
-
-    if (!cellData) {
-      return null;
-    }
-
-    return (
-      <div>
-        {cellData.map(item => (
-          <div 
-            key={item.id}
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              setSelectedItemId(item.id);
-          }}>
-            <Badge
-              status="success"
-              text={item.name}
-              style={{
-                cursor: 'pointer',
-                display: 'block',
-                paddingLeft: 6,
-                fontWeight: 500,
-             }}
-            />           
-          </div>
-        ))}
-      </div>
-    );
   }
 
   return (
@@ -156,26 +91,12 @@ export const ShiftsMainView: React.FC = () => {
 
           {/* Calendar View */}
           <Route path={path}>
-            <div
-              style={{
-                display: 'flex',
-              }}
-            >
-              { selectedItemId &&
-                <ShiftSummary
-                  id={selectedItemId}
-                  style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}}
-                >
-                  <a onClick={() => setFormVisible(true)}>edit</a>
-                </ShiftSummary>
-              }
-              <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
-              </div>
+            <ShiftsCalendarView data={filteredData} />
           </Route>
         </Switch>      
 
         <Drawer
-          title={selectedItemId ? 'Edit' : 'Add'}
+          title="Add"
           placement="left"
           closable={false}
           onClose={() => setFormVisible(false)}
@@ -185,7 +106,6 @@ export const ShiftsMainView: React.FC = () => {
           style={{ position: 'absolute' }}
         >
           <ShiftForm
-            id={selectedItemId}
             onSubmit={() => setFormVisible(false)}
             onCancel={() => setFormVisible(false)}
           />
