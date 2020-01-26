@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Calendar, Drawer, Badge } from 'antd';
 import { Route, Switch, useRouteMatch, Link } from 'react-router-dom';
 import moment from 'moment';
@@ -11,6 +11,8 @@ import { ShiftForm } from './ShiftForm';
 import { ShiftSummary } from './ShiftSummary';
 import { ShiftsGridView } from './ShiftsGridView';
 import { useShifts } from './useShifts';
+import { ShiftFilters, ShiftsFilters } from './ShiftsFilters';
+import { ShiftResolved } from './ShiftResolved';
 
 
 interface CalendarData {
@@ -24,13 +26,31 @@ const hashMomentDate = (date: moment.Moment): string => {
 export const ShiftsMainView: React.FC = () => {
 
   const [formVisible, setFormVisible] = useState<boolean>(false);
-  // const [selectedItemId, setSelectedItemId] = useState<string | null>('SjWIQt2a3UIQgDyMvQkc');
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [filters, setFilters] = useState<ShiftFilters>({});
+  const [filteredData, setFilteredData] = useState<ShiftResolved[] | undefined>();
 
   const { data, loading } = useFirestoreCollection<Shift>('shifts');
 
   const shifts = useShifts();
 
+  useEffect(() => {
+    if (shifts && filters) {
+      const result = shifts.filter(item => {
+        if (filters.location && item.location.id !== filters.location) {
+          return false;
+        }
+        if (filters.job && item.job.id !== filters.job) {
+          return false;
+        }
+        if (filters.person && item.people && !item.people.find(el => el?.id === filters.person)) {
+          return false;
+        }
+        return true;
+      });
+      setFilteredData(result);
+    }
+  }, [shifts, filters])
 
   let { path, url } = useRouteMatch();
 
@@ -121,36 +141,38 @@ export const ShiftsMainView: React.FC = () => {
           background: '#fff'
         }}
       >
-          <Switch>
-            {/* Grid View */}
-            <Route exact path={`${path}/grid`}>
-              <ShiftsGridView data={shifts} />
-            </Route>
+        <ShiftsFilters filters={filters} onFilterChange={setFilters} />
 
-            {/* List View */}
-            <Route exact path={`${path}/list`}>
-              list
-            </Route>
+        <Switch>
+          {/* Grid View */}
+          <Route exact path={`${path}/grid`}>
+            <ShiftsGridView data={filteredData} />
+          </Route>
 
-            {/* Calendar View */}
-            <Route path={path}>
-              <div
-                style={{
-                  display: 'flex',
-                }}
-              >
-                { selectedItemId &&
-                  <ShiftSummary
-                    id={selectedItemId}
-                    style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}}
-                  >
-                    <a onClick={() => setFormVisible(true)}>edit</a>
-                  </ShiftSummary>
-                }
-                <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
-                </div>
-            </Route>
-          </Switch>      
+          {/* List View */}
+          <Route exact path={`${path}/list`}>
+            list
+          </Route>
+
+          {/* Calendar View */}
+          <Route path={path}>
+            <div
+              style={{
+                display: 'flex',
+              }}
+            >
+              { selectedItemId &&
+                <ShiftSummary
+                  id={selectedItemId}
+                  style={{ boxShadow: '5px -5px 5px -5px #dcdada', marginRight: 5}}
+                >
+                  <a onClick={() => setFormVisible(true)}>edit</a>
+                </ShiftSummary>
+              }
+              <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
+              </div>
+          </Route>
+        </Switch>      
 
         <Drawer
           title={selectedItemId ? 'Edit' : 'Add'}

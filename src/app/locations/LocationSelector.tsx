@@ -4,6 +4,7 @@ import { Select } from 'antd';
 import { useFirestoreCollection } from '../../libs/firebase';
 
 import { Location } from './Location';
+import { sortByName } from '../../libs/utils';
 
 
 interface IProps {
@@ -21,7 +22,7 @@ export const LocationSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEle
   const { data, loading } = useFirestoreCollection<Location>('locations');
   
   const children = (data)
-    ? data.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
+    ? sortByName(data).map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
     : [];
   
   const handleChange = (value: string) => {
@@ -31,8 +32,8 @@ export const LocationSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEle
   return (
     <Select
       placeholder="Location"
-      defaultValue={model}
-      onBlur={handleChange}
+      value={model}
+      onChange={handleChange}
       style={combinedStyles}
       className={className}
       loading={loading}

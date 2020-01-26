@@ -9,9 +9,10 @@ const { Text } = Typography;
 interface IProps {
   model: Person;
   showHint?: boolean; 
+  size?: 'large' | 'small' | 'default' | number;
 }
 
-export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ model, showHint, className, style }) => {
+export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ model, showHint, size, className, style }) => {
 
   const styles = {
     marginRight: 2,
@@ -19,8 +20,8 @@ export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement
   };
 
   const avatar = (model.photoUri) 
-    ? <Avatar src={model.photoUri} className={className} style={styles} />
-    : <Avatar icon="user" className={className} style={styles} />
+    ? <Avatar size={size || 'default'} src={model.photoUri} className={className} style={styles} />
+    : <Avatar size={size || 'default'} icon="user" className={className} style={styles} />
 
   if (showHint) {
     const content = (
