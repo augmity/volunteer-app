@@ -6,6 +6,7 @@ import { PeopleInlineList } from '../people/PeopleInlineList';
 
 import { ShiftResolved } from './ShiftResolved';
 import { Person } from '../people';
+import { ShiftStatus } from './ShiftStatus';
 
 
 interface IProps {
@@ -82,6 +83,13 @@ export const ShiftsGridView: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
       key: 'people',
       render: (people: Person[]) => (
         <PeopleInlineList data={people} />
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item: ShiftResolved) => (
+        <ShiftStatus model={item} />
       ),
     },
   ];
