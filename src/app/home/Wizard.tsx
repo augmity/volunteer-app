@@ -16,7 +16,7 @@ const WizardComponent: React.FC<RouteComponentProps & React.HTMLAttributes<HTMLD
   let location = useLocation();
   
   useEffect(() => {
-    const idx = routes.findIndex(item => item === location.pathname);
+    const idx = routes.findIndex(item => location.pathname.startsWith(item));
     if (idx > -1) {
       setCurrent(idx);
     }
