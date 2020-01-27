@@ -10,6 +10,7 @@ import { useShifts } from './useShifts';
 import { ShiftFilters, ShiftsFilters } from './ShiftsFilters';
 import { ShiftResolved } from './ShiftResolved';
 import { ShiftsCalendarView } from './ShiftsCalendarView';
+import { ShiftsListView } from './ShiftsListView';
 
 
 export const ShiftsMainView: React.FC = () => {
@@ -55,15 +56,15 @@ export const ShiftsMainView: React.FC = () => {
           <Switch>
             <Route path={`${path}/grid`}>
               <Link to={`${url}/calendar`}>calendar</Link>
-               {/* | &nbsp; <Link to={`${url}/list`}>list</Link> */}
+              &nbsp; | &nbsp; <Link to={`${url}/list`}>list</Link>
             </Route>
-            {/* <Route path={`${path}/list`}>
+            <Route path={`${path}/list`}>
               <Link to={`${url}/calendar`}>calendar</Link> | &nbsp;
               <Link to={`${url}/grid`}>grid</Link>
-            </Route> */}
+            </Route>
             <Route path={path}>
               <Link to={`${url}/grid`}>grid</Link>
-              {/* | &nbsp; <Link to={`${url}/list`}>list</Link> */}
+              &nbsp; | &nbsp; <Link to={`${url}/list`}>list</Link>
             </Route>
           </Switch>
         </div>
@@ -86,7 +87,7 @@ export const ShiftsMainView: React.FC = () => {
 
           {/* List View */}
           <Route exact path={`${path}/list`}>
-            list
+            <ShiftsListView data={filteredData} />
           </Route>
 
           {/* Calendar View */}

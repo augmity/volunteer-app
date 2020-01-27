@@ -1,6 +1,9 @@
 export { ShiftForm } from './ShiftForm';
 export { ShiftFormBody } from './ShiftFormBody';
+export { ShiftStatus } from './ShiftStatus';
 export { ShiftSummary } from './ShiftSummary';
+export { ShiftsGridView } from './ShiftsGridView';
+export { ShiftsListView } from './ShiftsListView';
 export { ShiftsMainView } from './ShiftsMainView';
 export { useResolvePeopleForShift } from './useResolvePeopleForShift';
 export { useShift } from './useShift';
