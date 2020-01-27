@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Skeleton, Typography, Timeline } from 'antd';
+import { Skeleton, Typography, Timeline, Icon } from 'antd';
 import moment from 'moment';
 
 import { ShiftSummary } from './ShiftSummary';
@@ -50,6 +50,7 @@ export const ShiftsListView: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
           id={selectedItemId}
           style={{ marginRight: 16 }}
         >
+          <Icon type="close" onClick={() => setSelectedItemId(null)} />
         </ShiftSummary>
       }
 

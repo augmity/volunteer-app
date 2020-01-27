@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Skeleton, Badge, Calendar } from 'antd';
+import { Skeleton, Badge, Calendar, Icon } from 'antd';
 import moment from 'moment';
 
 import { ShiftSummary } from './ShiftSummary';
@@ -85,6 +85,7 @@ export const ShiftsCalendarView: React.FC<IProps & React.HTMLAttributes<HTMLDivE
           id={selectedItemId}
           style={{ marginRight: 5 }}
         >
+          <Icon type="close" onClick={() => setSelectedItemId(null)} />
         </ShiftSummary>
       }
       <Calendar style={{backgroundColor: '#fff'}} dateCellRender={dateCellRender} />
