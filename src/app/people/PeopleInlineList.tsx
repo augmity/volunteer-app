@@ -12,7 +12,7 @@ export const PeopleInlineList: React.FC<IProps & React.HTMLAttributes<HTMLDivEle
 
   return (
     <div className="people-inline-list" style={style}>
-      {data?.map(person => <PersonAvatar className="people-inline-list-item" model={person} showHint={true} key={person.id} />)}
+      {data?.map(person => <PersonAvatar className="people-inline-list-item" model={person} showTooltip={true} key={person.id} />)}
     </div>
   );
 }

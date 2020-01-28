@@ -2,17 +2,19 @@ import React from 'react';
 import { Avatar, Typography, Popover } from 'antd';
 
 import { Person } from './Person';
+import { TooltipPlacement } from 'antd/lib/tooltip';
 
 
 const { Text } = Typography;
 
 interface IProps {
   model: Person;
-  showHint?: boolean; 
+  showTooltip?: boolean; 
+  tooltipPlacement?: TooltipPlacement;
   size?: 'large' | 'small' | 'default' | number;
 }
 
-export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ model, showHint, size, className, style }) => {
+export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ model, showTooltip, tooltipPlacement, size, className, style }) => {
 
   const styles = {
     marginRight: 2,
@@ -23,7 +25,7 @@ export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement
     ? <Avatar size={size || 'default'} src={model.photoUri} className={className} style={styles} />
     : <Avatar size={size || 'default'} icon="user" className={className} style={styles} />
 
-  if (showHint) {
+  if (showTooltip) {
     const content = (
       <div>
         <Text strong>{model.name}</Text>
@@ -32,7 +34,7 @@ export const PersonAvatar: React.FC<IProps & React.HTMLAttributes<HTMLDivElement
     );
 
     return (
-      <Popover content={content}>
+      <Popover content={content} placement={tooltipPlacement || 'top'}>
         {avatar}
       </Popover>
     )
