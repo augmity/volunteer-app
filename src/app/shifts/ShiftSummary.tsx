@@ -16,7 +16,7 @@ export const ShiftSummary: React.FC<IProps & React.HTMLAttributes<HTMLDivElement
   const { shift, people, location, job } = useShift(id);
 
   return (
-    <div style={{ padding: 16, minWidth: 400, width: 400, ...style }}>
+    <div style={{ padding: 16, minWidth: 300, width: 400, ...style }}>
       {(shift) ? (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
