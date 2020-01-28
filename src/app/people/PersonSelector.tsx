@@ -40,6 +40,7 @@ export const PersonSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
 
   return (
     <Select
+      showSearch
       placeholder="Person"
       value={model}
       onChange={handleChange}
@@ -47,6 +48,9 @@ export const PersonSelector: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
       className={className}
       loading={loading}
       optionFilterProp="children"
+      filterOption={(input, option) =>
+        (option.props.label as string).toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
     >
       {children}
     </Select>
