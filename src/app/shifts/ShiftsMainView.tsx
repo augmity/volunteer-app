@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, Drawer } from 'antd';
 import { Route, Switch, useRouteMatch, Link } from 'react-router-dom';
-
-import { Shift } from './Shift';
 
 import { ShiftForm } from './ShiftForm';
 import { ShiftsGridView } from './ShiftsGridView';
@@ -11,6 +9,7 @@ import { ShiftFilters, ShiftsFilters } from './ShiftsFilters';
 import { ShiftResolved } from './ShiftResolved';
 import { ShiftsCalendarView } from './ShiftsCalendarView';
 import { ShiftsListView } from './ShiftsListView';
+import { AuthContext } from '../../libs/auth';
 
 
 export const ShiftsMainView: React.FC = () => {
@@ -20,6 +19,7 @@ export const ShiftsMainView: React.FC = () => {
   const [filteredData, setFilteredData] = useState<ShiftResolved[] | undefined>();
 
   const shifts = useShifts();
+  const { isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
     if (shifts && filters) {
@@ -48,9 +48,9 @@ export const ShiftsMainView: React.FC = () => {
   return (
     <>
       <div className="header" style={{ padding: '16px 0', display: 'flex', justifyContent: 'space-between' }}>
-        <Button type="primary" size="small" onClick={add}>
+        { isAdmin && <Button type="primary" size="small" onClick={add}>
           Add
-        </Button>
+        </Button>}
 
         <div>
           <Switch>

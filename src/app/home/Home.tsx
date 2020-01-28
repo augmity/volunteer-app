@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { Layout, Menu, Icon, Button, Dropdown } from 'antd';
@@ -11,6 +11,7 @@ import { ShiftsMainView } from '../shifts/ShiftsMainView';
 
 import './Home.css';
 import { Wizard } from './Wizard';
+import { AuthContext } from '../../libs/auth';
 
 
 const { Header, Content, Sider } = Layout;
@@ -19,9 +20,10 @@ interface MenuItem {
   uri: string;
   caption: string;
   icon: string;
+  needAdminRole?: boolean;
 }
 
-const menu: MenuItem[] = [
+const menuDef: MenuItem[] = [
   {
     uri: 'shifts',
     caption: 'Shifts',
@@ -41,6 +43,7 @@ const menu: MenuItem[] = [
     uri: 'people',
     caption: 'People',
     icon: 'user',
+    needAdminRole: true
   },
 ];
 
@@ -53,10 +56,13 @@ export const Home = () => {
 
   const isBigScreen = useMediaQuery({ minDeviceWidth: 1824 })
   const location = useLocation();
+  const { isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
     setSelectedMenuItem(location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '');
   }, [location]);
+
+  const menu = (isAdmin) ? menuDef : menuDef.filter(item => !item.needAdminRole);
 
 
   const mobileMenu = (
@@ -105,7 +111,7 @@ export const Home = () => {
               
           {/* <span style={{ marginLeft: 16, color: '#555' }}>(▰˘◡˘▰)</span> */}
 
-          {isBigScreen && <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>}
+          { isAdmin && isBigScreen && <Button size="small" onClick={() => { setShowWizard(!showWizard) }}>{ (showWizard) ? 'Hide Wizard' : 'Use Wizard'}</Button>}
 
           <UserDropdown className="user-dropdown" />
         </Header>

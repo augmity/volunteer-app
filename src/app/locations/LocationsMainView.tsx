@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Drawer } from 'antd';
 
 import { Location } from './Location';
 import { LocationsList } from './LocationsList';
 import { LocationForm } from './LocationForm';
+import { AuthContext } from '../../libs/auth';
 
 
 export const LocationsMainView: React.FC = () => {
 
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const { isAdmin } = useContext(AuthContext);
 
   const onSelectItem = (item: Location) => {
     setSelectedItemId(item.id);
@@ -24,9 +26,9 @@ export const LocationsMainView: React.FC = () => {
   return (
     <>
       <div className="header" style={{ padding: '16px 0'}}>
-        <Button type="primary" size="small" onClick={add}>
+        { isAdmin && <Button type="primary" size="small" onClick={add}>
           Add
-        </Button>
+        </Button>}
       </div>
       
       <div

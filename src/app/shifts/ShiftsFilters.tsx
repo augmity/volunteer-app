@@ -30,7 +30,7 @@ const inputStyles = {
 
 export const ShiftsFilters: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ filters, onFilterChange, style, className }) => {
 
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, isAdmin } = useContext(AuthContext);
 
   const onModelChange = (value: Partial<ShiftFilters>) => {
     onFilterChange({...filters, ...value});
@@ -44,7 +44,7 @@ export const ShiftsFilters: React.FC<IProps & React.HTMLAttributes<HTMLDivElemen
   
   return (
     <div style={{...componentStyles, ...style}} className={className}>
-      <PersonSelector model={filters.person} onModelChange={(value) => onModelChange({ person: value })} style={inputStyles} />
+      { isAdmin && <PersonSelector model={filters.person} onModelChange={(value) => onModelChange({ person: value })} style={inputStyles} />}
       <LocationSelector model={filters.location} onModelChange={(value) => onModelChange({ location: value })} style={inputStyles} />
       <JobSelector model={filters.job} onModelChange={(value) => onModelChange({ job: value })} style={inputStyles} />
       <Button onClick={() => onFilterChange({})}>Clear</Button>
