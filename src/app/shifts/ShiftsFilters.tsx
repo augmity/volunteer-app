@@ -5,6 +5,7 @@ import { LocationSelector } from '../locations';
 import { JobSelector } from '../jobs';
 import { Button } from 'antd';
 import { AuthContext } from '../../libs/auth';
+import { useMediaQuery } from 'react-responsive';
 
 
 export interface ShiftFilters {
@@ -18,19 +19,34 @@ interface IProps {
   onFilterChange: (value: ShiftFilters) => void;
 }
 
-const componentStyles = {
+const componentStylesDesktop = {
   display: 'flex',
   padding: '16px'
 }
 
-const inputStyles = {
+const inputStylesDesktop = {
   width: 280,
   marginRight: 8
+}
+
+const componentStylesMobile = {
+  display: 'flex',
+  padding: '16px',
+  flexDirection: 'column'
+}
+
+const inputStylesMobile = {
+  width: '100%',
+  marginBottom: 4
 }
 
 export const ShiftsFilters: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ filters, onFilterChange, style, className }) => {
 
   const { currentUser, isAdmin } = useContext(AuthContext);
+  const isBigScreen = useMediaQuery({ minDeviceWidth: 1200 });
+
+  const componentStyles = (isBigScreen) ? componentStylesDesktop : componentStylesMobile;
+  const inputStyles = (isBigScreen) ? inputStylesDesktop : inputStylesMobile;
 
   const onModelChange = (value: Partial<ShiftFilters>) => {
     onFilterChange({...filters, ...value});
