@@ -71,4 +71,9 @@ export class Firebase {
       }
     });
   }
+
+  updateDocument<T>(collectionName: string, id: string, value: Partial<T>): Promise<void> {
+    const ref = this.db.collection(collectionName).doc(id);
+    return ref.update(value);
+  }
 }

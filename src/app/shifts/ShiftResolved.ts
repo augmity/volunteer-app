@@ -13,4 +13,5 @@ export interface ShiftResolved {
   job: Job;
   location: Location;
   people?: Array<Person | undefined>;
+  peopleIds?: string[];
 }

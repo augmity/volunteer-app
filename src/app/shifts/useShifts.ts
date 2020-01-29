@@ -41,6 +41,7 @@ export const useShifts = (): ShiftResolved[] | undefined => {
           job: job!,
           location: location!,
           people: people,
+          peopleIds: shift.people
         }
       });
   }
