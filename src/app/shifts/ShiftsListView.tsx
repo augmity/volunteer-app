@@ -61,9 +61,12 @@ export const ShiftsListView: React.FC<IProps & React.HTMLAttributes<HTMLDivEleme
               {item.date}
             </Typography.Text>
             {item.shifts && item.shifts.map(shift => (
-              <div key={shift.id} style={{ marginTop: 2, display: 'flex' }}>
+              <div key={shift.id} style={{ marginTop: 2, marginBottom: 8, display: 'flex' }}>
                 <div style={{ width: 130 }}>{moment(shift.fromDateTime).format('h:mm A')} - {moment(shift.toDateTime).format('h:mm A')}</div>
-                <a onClick={() => setSelectedItemId(shift.id)}>{shift.name}</a>
+                <div>
+                  <a onClick={() => setSelectedItemId(shift.id)}>{shift.name}</a>
+                  <div>{shift.location.name}</div>
+                </div>
               </div>
             ))}
           </Timeline.Item>
