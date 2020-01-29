@@ -12,6 +12,7 @@ import { ShiftsMainView } from '../shifts/ShiftsMainView';
 import './Home.css';
 import { Wizard } from './Wizard';
 import { AuthContext } from '../../libs/auth';
+import { ReportsMainView } from '../reports';
 
 
 const { Header, Content, Sider } = Layout;
@@ -43,6 +44,12 @@ const menuDef: MenuItem[] = [
     uri: 'people',
     caption: 'People',
     icon: 'user',
+    needAdminRole: true
+  },
+  {
+    uri: 'reports',
+    caption: 'Summary',
+    icon: 'line-chart',
     needAdminRole: true
   },
 ];
@@ -128,6 +135,7 @@ export const Home = () => {
             <Route path="/locations" component={LocationsMainView} />
             <Route path="/people" component={PeopleMainView} />
             <Route path="/shifts" component={ShiftsMainView} />
+            <Route path="/reports" component={ReportsMainView} />
           </Switch>
 
         </Content>
