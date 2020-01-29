@@ -57,19 +57,16 @@ export class Firebase {
       }
     }
 
-    console.log('not in cache!', collectionName, id);
-
     const docRef = this.db
       .collection(collectionName)
       .doc(id);
 
     return docRef.get().then(doc => {
       if (doc.exists) {
-        console.log("Document data:", doc.data());
         return timestampToDateTime(addEntityId(doc as unknown as T));
       } else {
         // doc.data() will be undefined in this case
-        console.log("No such document!");
+        console.error("No such document!");
         return undefined;
       }
     });

@@ -54,7 +54,7 @@ export const Home = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>('');
   const [siderCollapsed, setSiderCollapsed] = useState(true);
 
-  const isBigScreen = useMediaQuery({ minDeviceWidth: 1824 })
+  const isBigScreen = useMediaQuery({ minDeviceWidth: 1200 });
   const location = useLocation();
   const { isAdmin } = useContext(AuthContext);
 

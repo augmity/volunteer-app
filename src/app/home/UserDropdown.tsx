@@ -9,9 +9,6 @@ export const UserDropdown: React.FC<{ className: string}> = ({ className }) => {
 
   const { currentUser, signOut, userData } = useContext(AuthContext);
 
-  console.log('currentUser', currentUser);
-  console.log('userData', userData);
-
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={signOut}>Sign out</Menu.Item>

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useShift } from './useShift';
 import { PeopleInlineList } from '../people/PeopleInlineList';
 import { Conversation } from '../../libs/conversations';
+import { useMediaQuery } from 'react-responsive';
 
 
 interface IProps {
@@ -14,9 +15,10 @@ interface IProps {
 export const ShiftSummary: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ id, style, children }) => {
 
   const { shift, people, location, job } = useShift(id);
+  const isBigScreen = useMediaQuery({ minDeviceWidth: 1200 });
 
   return (
-    <div style={{ padding: 16, minWidth: 300, width: 400, ...style }}>
+    <div style={{ padding: 16, minWidth: (isBigScreen) ? 400 : 300, width: 400, ...style }}>
       {(shift) ? (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>

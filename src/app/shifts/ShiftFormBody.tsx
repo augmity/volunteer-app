@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, DatePicker } from 'antd';
+import { Form, DatePicker, InputNumber, Row, Col } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import moment from 'moment';
 
@@ -28,9 +28,39 @@ export const ShiftFormBody: React.FC<IProps> = ({ form, children }) => {
           <RangePicker format="YYYY-MM-DD HH:mm A" showTime={{ use12Hours: true, format: 'h:mm', minuteStep: 5 }} />,
         )}
       </Form.Item>
-      
-      {children}
 
+      <Row>
+        <Col span={10}>
+          <Form.Item label="People (min)">
+            {getFieldDecorator('minPeople', {
+              initialValue: 1,
+              rules: [{
+                required: true,
+                message: 'Please select minimum number of people for this shift'
+              }]
+            })(
+              <InputNumber />
+            )}
+          </Form.Item>
+        </Col>
+
+        <Col span={10}>
+          <Form.Item label="People (max)">
+            {getFieldDecorator('maxPeople', {
+              initialValue: 5,
+              rules: [{
+                required: true,
+                message: 'Please select maximum number of people for this shift'
+              }]
+            })(
+              <InputNumber />
+            )}
+          </Form.Item>     
+        </Col>
+      </Row>
+
+      {children}
+      
     </Form>
   );
 }
