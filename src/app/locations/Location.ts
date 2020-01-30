@@ -1,13 +1,8 @@
-export interface LatLong {
-  lat: number;
-  long: number;
-}
+import { Place } from '../../libs/maps';
 
-export interface Location {
+export interface Location extends Place {
   id: string;
   name: string;
   description?: string;
-  address?: string;
-  position: LatLong;
   zoomLevel: number;
 }

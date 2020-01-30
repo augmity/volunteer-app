@@ -1,5 +1,7 @@
 import React from 'react';
-import { Row, Col, Statistic } from 'antd';
+import { Row, Col, Statistic, Typography } from 'antd';
+
+import { Map } from '../../libs/maps';
 
 import { useFirestoreCollection } from '../../libs/firebase';
 import { Person } from '../people';
@@ -34,10 +36,16 @@ export const ReportsMainView: React.FC = () => {
               <Statistic title="Locations" value={locations?.data?.length} />
             </Col>
           </Row>
+
+          <Row style={{ marginTop: 24 }}>
+            <Col md={16}>              
+              <Map places={locations?.data} />
+            </Col>
+          </Row>
         </Col>
         
         <Col md={8} xs={24}>
-          actions
+          <Typography.Text>Actions</Typography.Text>
         </Col>
       </Row>
     </div>

@@ -25,10 +25,6 @@ export const LocationFormBody: React.FC<IProps> = ({ form, children }) => {
         })(<Input />)}
       </Form.Item>
 
-      <Form.Item label="Address">
-        {getFieldDecorator('address')(<Input />)}
-      </Form.Item>
-
       <Form.Item label="Description">
         {getFieldDecorator('description')(<TextArea />)}
       </Form.Item>

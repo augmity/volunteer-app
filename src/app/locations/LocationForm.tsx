@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { useFirestoreDocument, useFirebase } from '../../libs/firebase';
+import { Map } from '../../libs/maps';
 
 import { Location } from './Location';
 import { LocationFormBody } from './LocationFormBody';
@@ -17,6 +18,7 @@ interface IProps {
 
 const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit }) => {
 
+  const [place, setPlace] = useState();
   const firebase = useFirebase();
   const doc = useFirestoreDocument<Location>('locations', id);
 
@@ -24,7 +26,6 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
     if (doc as any) {
       form.setFieldsValue({
         name: doc?.name,
-        address: doc?.address,
         description: doc?.description
       });
     } else {
@@ -38,8 +39,8 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
       if (!err) {
         const entity: Partial<Location> = {
           name: values.name,
-          address: values.address || null,
           description: values.description || null,
+          ...place
         }
         await save(entity);
         onSubmit(entity);
@@ -48,7 +49,6 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
   };
 
   const save = (entity: Partial<Location>): Promise<any> => {
-    console.log('entity', entity);
     if (id) {
       return firebase.db.collection('locations')
         .doc(id)
@@ -65,6 +65,10 @@ const LocationFormComponent: React.FC<IProps> = ({ form, id, onCancel, onSubmit 
 
   return (
     <LocationFormBody form={form}>
+      <div style={{ marginBottom: 16 }}>
+        <Map onPlaceSelected={setPlace} showSearch={true} />
+      </div>
+
       <div>
         <Button type="primary" htmlType="submit" style={{ marginRight: 8 }} onClick={handleSubmit}>Save</Button>
         <Button onClick={onCancel}>Cancel</Button>

@@ -29,7 +29,7 @@ export const LocationsList: React.FC<IProps & React.HTMLAttributes<HTMLDivElemen
         <List.Item actions={[<a onClick={() => selectItem(item)}>edit</a>]}>
           <List.Item.Meta
             title={<a onClick={() => selectItem(item)}>{item.name}</a>}
-            description={item.address}
+            description={item.placeName}
           />
         </List.Item>
       )}

@@ -38,7 +38,7 @@ export const ShiftSummary: React.FC<IProps & React.HTMLAttributes<HTMLDivElement
             <div className="info-grid-label">Location</div>
             <div className="info-grid-value" style={{ display: 'flex', flexDirection: 'column'}}>
               <span>{location?.name}</span>
-              <a href="#">(map)</a>
+              <a target='_blank' href={location?.placeUri}>(map)</a>
             </div>
           </div>
 
