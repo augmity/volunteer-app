@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from 'firebase/app';
+import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -15,12 +16,14 @@ export class Firebase {
 
   app: firebase.app.App;
   db: firebase.firestore.Firestore;
+  analytics: firebase.analytics.Analytics;
   auth: firebase.auth.Auth;
   private cache = new StreamCache<string, any>();
 
   constructor(config: Object) {
     this.app = firebase.initializeApp(config);
     this.db = firebase.firestore();
+    this.analytics = firebase.analytics();
     this.auth = firebase.auth();
 
     this.db.enablePersistence({ synchronizeTabs: true });

@@ -13,6 +13,7 @@ import './Home.css';
 import { Wizard } from './Wizard';
 import { AuthContext } from '../../libs/auth';
 import { ReportsMainView } from '../reports';
+import { useFirebase } from '../../libs/firebase';
 
 
 const { Header, Content, Sider } = Layout;
@@ -61,12 +62,14 @@ export const Home = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>('');
   const [siderCollapsed, setSiderCollapsed] = useState(true);
 
+  const firebase = useFirebase();
   const isBigScreen = useMediaQuery({ minDeviceWidth: 1200 });
   const location = useLocation();
   const { isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
     setSelectedMenuItem(location.pathname.replace('/', '').split('/').find((item, idx) => idx === 0) || '');
+    firebase.analytics.logEvent('page', { path: location.pathname });
   }, [location]);
 
   const menu = (isAdmin) ? menuDef : menuDef.filter(item => !item.needAdminRole);
