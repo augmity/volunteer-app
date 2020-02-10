@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { FirebaseContext, Firebase } from '../../libs/firebase';
+import { useState, useEffect } from 'react';
+import { useFirebase } from '../../libs/firebase';
 
 import { Shift } from './Shift';
 import { Job } from '../jobs';
@@ -16,7 +16,7 @@ interface UseShiftResult {
 
 export const useShift = (id: string): UseShiftResult => {
 
-  const firebase = useContext(FirebaseContext) as Firebase;
+  const firebase = useFirebase();
   const [shift, setShift] = useState<Shift>();
   const [people, setPeople] = useState<Person[]>();
   const [job, setJob] = useState<Job>();

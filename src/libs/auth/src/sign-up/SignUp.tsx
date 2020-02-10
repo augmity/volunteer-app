@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-import fb from 'firebase';
+import fb from 'firebase/app';
 import { Form, Icon, Input, Button, Divider, message } from 'antd';
 
 import { Firebase, FirebaseContext } from '../../../firebase';

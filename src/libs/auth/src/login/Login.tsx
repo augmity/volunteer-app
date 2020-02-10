@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
-import fb from 'firebase';
-import { Form, Icon, Input, Button, Divider, Checkbox, message } from 'antd';
+import fb from 'firebase/app';
+import { Form, Icon, Input, Button, Divider, message } from 'antd';
 
-import { Firebase, FirebaseContext } from '../../../firebase';
+import { useFirebase } from '../../../firebase';
 import { AuthContext } from '../Auth';
 
 import './Login.css';
@@ -18,7 +18,7 @@ interface IProps {
 
 const LoginForm = ({ history, form }: IProps) => {
 
-  const firebase = useContext(FirebaseContext) as Firebase;
+  const firebase = useFirebase();
 
   const handleLogin = useCallback(
     event => {

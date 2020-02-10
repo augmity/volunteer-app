@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { FirebaseContext, Firebase } from '../../libs/firebase';
 
 import { Shift } from './Shift';
