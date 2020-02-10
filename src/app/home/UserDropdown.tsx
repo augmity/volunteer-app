@@ -1,17 +1,20 @@
 import React, { useContext } from 'react';
-import { Menu, Dropdown, Icon, Avatar } from 'antd';
+import { Menu, Dropdown, Icon } from 'antd';
 
 import { AuthContext } from '../../libs/auth';
 import { PersonAvatar } from '../people';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 
-export const UserDropdown: React.FC<{ className: string}> = ({ className }) => {
+export const UserDropdownComponent: React.FC<RouteComponentProps & React.HTMLAttributes<HTMLDivElement>> = ({ history, className }) => {
 
-  const { currentUser, signOut, userData } = useContext(AuthContext);
+  const { signOut, userData } = useContext(AuthContext);
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={signOut}>Sign out</Menu.Item>
+      <Menu.Item key="1" onClick={() => history.push('/user-settings')}>Settings</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2" onClick={signOut}>Sign out</Menu.Item>
     </Menu>
   );
 
@@ -46,3 +49,5 @@ export const UserDropdown: React.FC<{ className: string}> = ({ className }) => {
   //   </div>
   // );
 }
+
+export const UserDropdown = withRouter(UserDropdownComponent);

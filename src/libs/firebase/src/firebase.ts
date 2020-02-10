@@ -2,11 +2,13 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
+import 'firebase/storage';
 import 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { addEntityId, timestampToDateTime } from './firebase-helpers';
 import { StreamCache } from '../../utils';
+import { FileUploadStatus } from './FileUploadStatus';
 
 
 export const FirebaseContext = React.createContext<Firebase | null>(null);
@@ -18,6 +20,7 @@ export class Firebase {
   db: firebase.firestore.Firestore;
   analytics: firebase.analytics.Analytics;
   auth: firebase.auth.Auth;
+  storage: firebase.storage.Storage;
   private cache = new StreamCache<string, any>();
 
   constructor(config: Object) {
@@ -25,6 +28,7 @@ export class Firebase {
     this.db = firebase.firestore();
     this.analytics = firebase.analytics();
     this.auth = firebase.auth();
+    this.storage = firebase.storage();
 
     this.db.enablePersistence({ synchronizeTabs: true });
   }
@@ -78,5 +82,35 @@ export class Firebase {
   updateDocument<T>(collectionName: string, id: string, value: Partial<T>): Promise<void> {
     const ref = this.db.collection(collectionName).doc(id);
     return ref.update(value);
+  }
+
+  upload(refPath: string, file: File): Observable<FileUploadStatus> {
+
+    const subject = new BehaviorSubject<FileUploadStatus>({ status: 'uploading', progress: 0 });
+    const storageRef = this.storage.ref();
+    
+    const metadata = {
+      contentType: file.type
+    };
+
+    const uploadTask = storageRef.child(refPath + file.name).put(file, metadata);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) => {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        subject.next({ status: 'uploading', progress });
+      },
+      (error: any) => {
+        console.error(error);
+        subject.next({ status: 'error', error });
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then((uri) => {
+          subject.next({ status: 'success', uri }); 
+        });
+      }
+    );
+
+    return subject.asObservable();
   }
 }

@@ -11,7 +11,7 @@ import { ShiftsMainView } from '../shifts/ShiftsMainView';
 
 import './Home.css';
 import { Wizard } from './Wizard';
-import { AuthContext } from '../../libs/auth';
+import { AuthContext, UserProfile } from '../../libs/auth';
 import { ReportsMainView } from '../reports';
 import { useFirebase } from '../../libs/firebase';
 
@@ -139,6 +139,7 @@ export const Home = () => {
             <Route path="/people" component={PeopleMainView} />
             <Route path="/shifts" component={ShiftsMainView} />
             <Route path="/reports" component={ReportsMainView} />
+            <Route path="/user-settings" component={UserProfile} />
           </Switch>
 
         </Content>

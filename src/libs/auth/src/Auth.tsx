@@ -3,13 +3,15 @@ import { User } from 'firebase';
 
 import { FirebaseContext, Firebase } from '../../firebase';
 import { addEntityId } from '../../firebase/src/firebase-helpers';
+import { UserData } from './UserData';
 
 
 interface IAuth {
   currentUser: User | undefined | null;
-  userData: any | undefined;
+  userData: UserData | undefined;
   isAdmin: boolean;
   signOut: () => void;
+  updateUserData: (value: Partial<UserData>) => void;
 }
 
 interface IProps {
@@ -21,7 +23,8 @@ export const AuthContext = React.createContext<IAuth>({
   currentUser: null,
   userData: undefined,
   isAdmin: false,
-  signOut: () => null
+  signOut: () => null,
+  updateUserData: () => null,
 });
 
 export const AuthProvider = ({ children }: IProps) => {
@@ -34,8 +37,17 @@ export const AuthProvider = ({ children }: IProps) => {
   const signOut = () => {
     firebase.auth.signOut();
   }
-  
 
+  const updateUserData = (value: Partial<UserData>) => {
+    firebase.db
+      .collection('users')
+      .doc(userData.id)
+      .set(value, { merge: true })
+      .then(() => {
+        setUserData({ ...userData, ...value });
+      })
+  }
+  
   useEffect(() => {
     firebase.auth.onAuthStateChanged((data) => {
       setCurrentUser(data);
@@ -52,7 +64,7 @@ export const AuthProvider = ({ children }: IProps) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, userData, isAdmin, signOut }}>
+    <AuthContext.Provider value={{ currentUser, userData, isAdmin, signOut, updateUserData }}>
       {children}
     </AuthContext.Provider>
   );
